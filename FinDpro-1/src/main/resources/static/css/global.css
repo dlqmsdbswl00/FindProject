@@ -2,21 +2,25 @@
 
 /* global.css */
 :root {
-    --find-main-color: #2563eb;
+	--find-main-color: #2563eb;
 }
 
 /* 전체 화면을 100% 차지하도록 설정 */
 html,
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    background-color: #ffffff;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	background-color: #ffffff;
 }
 
 /* 콘텐츠 영역 */
 main {
-    flex-grow: 1;  /* main 영역이 남은 공간을 차지하게 함 */
+	flex-grow: 1;
+	/* main 영역이 남은 공간을 차지하게 함 */
+	padding-bottom: 20px;
+	/* main과 footer 사이에 여백을 추가 */
+
 }
