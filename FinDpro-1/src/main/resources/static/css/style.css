@@ -1,88 +1,122 @@
 /* 기본 배경과 포인트 색 설정 */
 :root {
-    --find-main-color: #2563eb; /* 포인트 색 */
+	--find-main-color: #2563eb;
+	/* 포인트 색 */
+}
+
+/* 전체 화면을 100% 차지하도록 설정 */
+html,
+body {
+	height: 100%;
+	/* 전체 화면의 높이를 100%로 설정 */
+	margin: 0;
+	/* 기본 여백 제거 */
+	display: flex;
+	/* body를 flexbox로 설정 */
+	flex-direction: column;
+	/* 세로 방향으로 레이아웃 배치 */
+}
+
+/* 콘텐츠 영역 */
+main {
+	flex-grow: 1;
+	/* main 영역이 남은 공간을 차지하게 함 */
 }
 
 /* body 기본 스타일 */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff; /* 전체 배경을 하얀색으로 설정 */
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #ffffff;
+	/* 전체 배경을 하얀색으로 설정 */
 }
 
 /* header 스타일 */
 header {
-    background-color: var(--find-main-color); /* 포인트 색상 사용 */
-    color: white; /* 글자 색을 하얀색으로 */
-    text-align: center;
-    padding: 10px 0;
+	background-color: var(--find-main-color);
+	/* 포인트 색상 사용 */
+	color: white;
+	/* 글자 색을 하얀색으로 */
+	text-align: center;
+	padding: 10px 0;
 }
+
 .nav {
-    padding: 10px 20px;
+	padding: 0px 20px;
 }
 
 .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #ffffff; /* 로고 글자 색을 포인트 색상으로 */
+	font-size: 24px;
+	font-weight: bold;
+	color: #ffffff;
+	/* 로고 글자 색을 포인트 색상으로 */
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .user-info span {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 
 
 /* footer 스타일 */
 footer {
-    background-color: var(--find-main-color); /* 포인트 색상 사용 */
-    color: white; /*글자색 하얀색*/
-    text-align: center;
-    padding: 10px 0;
-    font-size: 14px; /* 글자 크기 조정 */
-    
+	background-color: var(--find-main-color);
+	/* 포인트 색상 사용 */
+	color: white;
+	/*글자색 하얀색*/
+	text-align: center;
+	padding: 10px 0;
+	font-size: 14px;
+	/* 글자 크기 조정 */
+	position: relative;
+	bottom: 0;
+	/* 화면 하단에 고정 */
+	width: 100%;
+	/* 화면 너비에 맞게 */
+
 }
 
 footer p {
-    margin: 0; /* 여백 없애기 */
+	margin: 0;
+	/* 여백 없애기 */
 }
 
 
 /* 사용자 정보 스타일 */
 .user-info {
-    text-align: center;
-    margin: 20px 0;
+	text-align: center;
+	margin: 20px 0;
 }
 
 .profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
 }
 
 /* 기능 영역 스타일 */
 .features {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
+	display: flex;
+	justify-content: space-around;
+	margin: 20px 0;
 }
 
 .feature {
-    text-align: center;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 10px;
-    width: 200px;
+	text-align: center;
+	border: 1px solid #ccc;
+	padding: 20px;
+	border-radius: 10px;
+	width: 200px;
 }
