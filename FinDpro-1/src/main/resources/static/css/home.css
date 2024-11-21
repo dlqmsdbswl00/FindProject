@@ -15,12 +15,18 @@
 	/* 수직 정렬을 위한 설정 */
 }
 
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* 프로필 이미지 */
 .profile-pic {
-	width: 150px;
+	width: 60%;
 	height: 150px;
 	border-radius: 50%;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 /* 사용자명 */
