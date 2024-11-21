@@ -1,45 +1,64 @@
 /* 전체 레이아웃 설정 */
 .main-content {
-height:100%;
+	height: 100%;
 	display: flex;
-	justify-content: space-between; /* 가로 방향 양 끝 정렬 */
-	align-items: center; /* 세로 방향 가운데 정렬 */
+	justify-content: space-between;
+	/* 가로 방향 양 끝 정렬 */
+	align-items: center;
+	/* 세로 방향 가운데 정렬 */
 	margin: 20px;
 }
 
 /* 왼쪽 영역 (프로필 사진, 사용자명) */
 .left-side {
 	width: 40%;
+	height: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	/* 수직 정렬을 위한 설정 */
+	padding: 20px;
+	/* 내부 여백 추가 */
 }
 
 .user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 15px;
+	/* 사진과 사용자명 사이 간격 추가 */
 }
 
 /* 프로필 이미지 */
 .profile-pic {
-	width: 60%;
-	height: 150px;
+	width: 80%;
+	/* 부모의 너비 대비 80% */
+	max-width: 500px;
+	/* 최대 크기 제한 */
+	height: auto;
+	/* 비율 유지 */
 	border-radius: 50%;
-	margin-bottom: 10px;
+	object-fit: cover;
+	/* 이미지 비율 유지하며 영역 채움 */
 }
 
 /* 사용자명 */
 .user-info h1 {
-	font-size: 24px;
+	width: 80%;
+	display: flex;
+	font-size: 50px;
 	text-align: center;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
 }
 
 /* 오른쪽 영역 (버튼들) */
 .right-side {
 	width: 65%;
+	height: auto;
 	align-items: center;
 	justify-content: center;
 }
@@ -55,16 +74,17 @@ height:100%;
 	grid-template-rows: repeat(2, 1fr);
 	/* 2개의 행 */
 	gap: 10px;
-	padding:10px;
+	padding: 10px;
 	height: 100%;
 	/* 버튼들이 부모의 높이를 차지하도록 */
-	
+
 }
 
 /* 각 버튼 스타일 */
 .feature {
 	display: flex;
-	 background-color: #ffffff; /* 포인트 색상 사용 */
+	background-color: #ffffff;
+	/* 포인트 색상 사용 */
 	flex-direction: column;
 	/* 내용은 세로로 배치 */
 	justify-content: center;
@@ -83,22 +103,31 @@ height:100%;
 .subtitle {
 	align-items: center;
 	justify-content: center;
-    display: flex;
-    align-items: center; /* 세로 가운데 정렬 */
-    color: var(--find-main-color); /* 포인트 색 적용 */
-    margin-bottom: 10px; /* 아래와의 간격 */
+	display: flex;
+	align-items: center;
+	/* 세로 가운데 정렬 */
+	color: var(--find-main-color);
+	/* 포인트 색 적용 */
+	margin-bottom: 10px;
+	/* 아래와의 간격 */
 }
 
 /* 아이콘 스타일 */
 .subtitle i {
-    font-size: 24px; /* 아이콘 크기 */
-    margin-right: 10px; /* 제목과의 간격 */
+	font-size: 24px;
+	/* 아이콘 크기 */
+	margin-right: 10px;
+	/* 제목과의 간격 */
 }
 
 /* 제목 스타일 */
 .subtitle h2 {
-    font-size: 18px; /* 제목 크기 */
-    margin: 0; /* 기본 여백 제거 */
+	font-size: 20px;
+	/* 제목 크기 */
+	margin: 0;
+	/* 기본 여백 제거 */
+	justify-content: center;
+	align-items: center;
 }
 
 /* 버튼 hover 시 효과 */
@@ -109,29 +138,8 @@ height:100%;
 	/* 그림자 추가 */
 }
 
-/* 각 버튼의 제목 */
-.feature h2 {
-	font-size: 18px;
-	margin-bottom: 10px;
-	flex-grow: 0;
-	/* h2는 위쪽에 고정 */
-}
-
 /* 각 버튼의 내용 */
 .feature p {
 	font-size: 14px;
 	color: #555;
-}
-
-
-/* 사용자 정보 스타일 */
-.user-info {
-	text-align: center;
-	margin: 20px 0;
-}
-
-.profile-pic {
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
 }

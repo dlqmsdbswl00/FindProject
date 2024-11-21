@@ -2,49 +2,58 @@
 
 /* header 스타일 */
 header {
-    background-color: var(--find-main-color); /* 포인트 색상 사용 */
-    color: white; /* 글자 색을 하얀색으로 */
-    text-align: center;
-    padding: 10px 0;
+	background-color: var(--find-main-color);
+	/* 포인트 색상 사용 */
+	color: white;
+	/* 글자 색을 하얀색으로 */
+	text-align: center;
+	padding: 10px 0;
 }
 
 .nav {
-    padding: 0px 20px;
+	padding: 0px 20px;
 }
 
 .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #ffffff; /* 로고 글자 색을 포인트 색상으로 */
+	font-size: 24px;
+	font-weight: bold;
+	color: #ffffff;
+	/* 로고 글자 색을 포인트 색상으로 */
 }
 
 .nav-info {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .nav-info span {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 /* footer 스타일 */
 footer {
-    background-color: var(--find-main-color); /* 포인트 색상 사용 */
-    color: white; /* 글자색 하얀색 */
-    text-align: center;
-    padding: 10px 0;
-    font-size: 14px; /* 글자 크기 조정 */
-    width: 100%; /* 화면 너비에 맞게 */
-    margin-top: auto; /* footer를 화면 하단에 고정 */
+	background-color: var(--find-main-color);
+	/* 포인트 색상 사용 */
+	color: white;
+	/* 글자색 하얀색 */
+	text-align: center;
+	padding: 10px 0;
+	font-size: 14px;
+	/* 글자 크기 조정 */
+	width: 100%;
+	/* 화면 너비에 맞게 */
+	margin-top: auto;
+	/* footer를 화면 하단에 고정 */
 }
 
 /* footer p 스타일 */
 footer p {
-    margin: 0; /* 여백 없애기 */
+	margin: 0;
+	/* 여백 없애기 */
 }
