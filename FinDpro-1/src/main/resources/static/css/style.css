@@ -1,42 +1,66 @@
+/* 기본 배경과 포인트 색 설정 */
+:root {
+    --find-main-color: #2563eb; /* 포인트 색 */
+}
+
+/* body 기본 스타일 */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #ffffff; /* 전체 배경을 하얀색으로 설정 */
 }
 
 /* header 스타일 */
-nav {
-    background-color: #f8f9fa; /* 네비게이션 바 배경색 */
-    padding: 10px 20px; /* 여백 설정 */
-}
-
-.navbar-container {
-    display: flex; /* flexbox 사용 */
-    justify-content: space-between; /* 양 끝에 배치 */
-    align-items: center; /* 세로로 중앙 정렬 */
-}
-
-.logo {
-    font-size: 24px; /* 로고 글자 크기 */
-    font-weight: bold; /* 로고 글자 굵게 */
-}
-
-.user-info {
-    display: flex; /* flexbox 사용 */
-    align-items: center; /* 세로로 중앙 정렬 */
-}
-
-.user-info span {
-    margin-right: 10px; /* 사용자 이름과 로그아웃 버튼 사이의 간격 */
-}
-
-header, footer {
-    background-color: #333;
-    color: white;
+header {
+    background-color: var(--find-main-color); /* 포인트 색상 사용 */
+    color: white; /* 글자 색을 하얀색으로 */
     text-align: center;
     padding: 10px 0;
 }
+.nav {
+    padding: 10px 20px;
+}
 
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff; /* 로고 글자 색을 포인트 색상으로 */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    margin-right: 10px;
+}
+
+
+
+/* footer 스타일 */
+footer {
+    background-color: var(--find-main-color); /* 포인트 색상 사용 */
+    color: white; /*글자색 하얀색*/
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px; /* 글자 크기 조정 */
+    
+}
+
+footer p {
+    margin: 0; /* 여백 없애기 */
+}
+
+
+/* 사용자 정보 스타일 */
 .user-info {
     text-align: center;
     margin: 20px 0;
@@ -48,6 +72,7 @@ header, footer {
     border-radius: 50%;
 }
 
+/* 기능 영역 스타일 */
 .features {
     display: flex;
     justify-content: space-around;
