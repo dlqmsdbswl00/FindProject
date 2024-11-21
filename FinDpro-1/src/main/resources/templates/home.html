@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Fin.D 홈</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<title>Fin.D 홈</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
-    <header th:insert="fragments/header :: header"></header>
+	<header th:insert="fragments/header :: header"></header>
 
-    <main>
-        <section>
-            <div class="user-info">
-                <img src="/images/default-profile.jpg" alt="프로필" class="profile-pic">
-                <h1 th:text="${userName}"></h1>
-            </div>
+	<main>
+		<section class="main-content">
+			<div class="left-side">
+				<div class="user-info">
+					<img src="/images/default-profile.jpg" alt="프로필" class="profile-pic">
+					<h1 th:text="${userName}"></h1>
+				</div>
+			</div>
 
-            <div class="features">
-                <div class="feature">
-                    <h2>계좌현황</h2>
-                    <p th:text="'잔액: ' + ${accountBalance}"></p>
-                </div>
-                <div class="feature">
-                    <h2>소비달력</h2>
-                    <p th:text="'이번 달 지출: ' + ${monthlyExpense}"></p>
-                </div>
-                <div class="feature">
-                    <h2>소비분석</h2>
-                    <p th:text="'주요 지출: ' + ${mainSpending}"></p>
-                </div>
-                <div class="feature">
-                    <h2>습관저금통</h2>
-                    <p th:text="'저금: ' + ${habitSaving}"></p>
-                </div>
-            </div>
-        </section>
-    </main>
+			<div class="right-side">
+				<div class="features">
+					<div class="feature">
+						<h2>계좌현황</h2>
+						<p th:text="'잔액: ' + ${accountBalance}"></p>
+					</div>
+					<div class="feature">
+						<h2>소비달력</h2>
+						<p th:text="'이번 달 지출: ' + ${monthlyExpense}"></p>
+					</div>
+					<div class="feature">
+						<h2>소비분석</h2>
+						<p th:text="'주요 지출: ' + ${mainSpending}"></p>
+					</div>
+					<div class="feature">
+						<h2>습관저금통</h2>
+						<p th:text="'저금: ' + ${habitSaving}"></p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
 
-    <footer th:insert="fragments/footer :: footer"></footer>
+	<footer th:insert="fragments/footer :: footer"></footer>
 </body>
+
 </html>
