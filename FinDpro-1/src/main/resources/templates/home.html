@@ -16,42 +16,51 @@
 
 	<main>
 		<section class="main-content">
-			<div class="left-side">
-				<div class="user-info">
-					<img src="/images/default-profile.jpg" alt="프로필" class="profile-pic">
-					<h1 th:text="${userName}"></h1>
+			<!-- 상단 영역 -->
+		<section class="main-top">
+			<h1>Fin.D</h1>
+			<p>여기에서 계좌 현황과 소비 패턴을 확인하고 관리할 수 있습니다.</p>
+		</section>
+		
+		<!-- 하단 영역 -->
+			<div class="main-bottom">
+				<div class="left-side">
+					<div class="user-info">
+						<img src="/images/default-profile.jpg" alt="프로필" class="profile-pic">
+						<h2 th:text="${userName}"></h2>
+					</div>
 				</div>
-			</div>
 
-			<div class="right-side">
-				<div class="features">
-					<div class="feature">
-						<div class="subtitle">
-							<i class="fi fi-br-sack-dollar"></i>
-							<h2>계좌현황</h2>
+				<div class="right-side">
+					<div class="features">
+						<div class="feature">
+							<div class="subtitle">
+								<i class="fi fi-br-sack-dollar"></i>
+								<h2>계좌현황</h2>
+							</div>
+							<p th:text="'잔액: ' + ${accountBalance}"></p>
 						</div>
-						<p th:text="'잔액: ' + ${accountBalance}"></p>
-					</div>
-					<div class="feature">
-						<div class="subtitle">
-							<i class="fi fi-br-payroll-calendar"></i>
-							<h2>소비달력</h2>
+						<div class="feature">
+							<div class="subtitle">
+								<i class="fi fi-br-payroll-calendar"></i>
+								<h2>소비달력</h2>
+							</div>
+							<p th:text="'이번 달 지출: ' + ${monthlyExpense}"></p>
 						</div>
-						<p th:text="'이번 달 지출: ' + ${monthlyExpense}"></p>
-					</div>
-					<div class="feature">
-						<div class="subtitle">
-							<i class="fi fi-br-chart-pie-simple-circle-dollar"></i>
-							<h2>소비분석</h2>
+						<div class="feature">
+							<div class="subtitle">
+								<i class="fi fi-br-chart-pie-simple-circle-dollar"></i>
+								<h2>소비분석</h2>
+							</div>
+							<p th:text="'주요 지출: ' + ${mainSpending}"></p>
 						</div>
-						<p th:text="'주요 지출: ' + ${mainSpending}"></p>
-					</div>
-					<div class="feature">
-						<div class="subtitle">
-							<i class="fi fi-br-piggy-bank"></i>
-							<h2>습관저금통</h2>
+						<div class="feature">
+							<div class="subtitle">
+								<i class="fi fi-br-piggy-bank"></i>
+								<h2>습관저금통</h2>
+							</div>
+							<p th:text="'저금: ' + ${habitSaving}"></p>
 						</div>
-						<p th:text="'저금: ' + ${habitSaving}"></p>
 					</div>
 				</div>
 			</div>

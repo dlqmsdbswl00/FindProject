@@ -39,17 +39,13 @@ header {
 /* footer 스타일 */
 footer {
 	background-color: var(--find-main-color);
-	/* 포인트 색상 사용 */
 	color: white;
-	/* 글자색 하얀색 */
 	text-align: center;
 	padding: 10px 0;
 	font-size: 14px;
-	/* 글자 크기 조정 */
 	width: 100%;
-	/* 화면 너비에 맞게 */
-	margin-top: auto;
-	/* footer를 화면 하단에 고정 */
+	position: relative;
+    bottom: 0;  /* 항상 화면 맨 아래에 위치하도록 설정 */
 }
 
 /* footer p 스타일 */
