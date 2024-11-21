@@ -18,9 +18,10 @@ body {
 
 /* 콘텐츠 영역 */
 main {
-	flex-grow: 1;
-	/* main 영역이 남은 공간을 차지하게 함 */
-	padding-bottom: 20px;
-	/* main과 footer 사이에 여백을 추가 */
+
+	flex-grow: 1; /* main 영역이 남은 공간을 차지하게 함 */
+	padding-bottom: 20px; /* main과 footer 사이에 여백을 추가 */
+		justify-content: space-between; /* 가로 방향 양 끝 정렬 */
+	align-items: center; /* 세로 방향 가운데 정렬 */
 
 }

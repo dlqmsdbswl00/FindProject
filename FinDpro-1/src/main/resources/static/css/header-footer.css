@@ -24,12 +24,12 @@ header {
     color: #ffffff; /* 로고 글자 색을 포인트 색상으로 */
 }
 
-.user-info {
+.nav-info {
     display: flex;
     align-items: center;
 }
 
-.user-info span {
+.nav-info span {
     margin-right: 10px;
 }
 

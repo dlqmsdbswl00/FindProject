@@ -6,8 +6,9 @@
 	<link rel="stylesheet" th:href="@{/css/global.css}">
 	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/home.css}">
-	
-	
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+
+
 </head>
 
 <body>
@@ -25,19 +26,31 @@
 			<div class="right-side">
 				<div class="features">
 					<div class="feature">
-						<h2>계좌현황</h2>
+						<div class="subtitle">
+							<i class="fi fi-br-sack-dollar"></i>
+							<h2>계좌현황</h2>
+						</div>
 						<p th:text="'잔액: ' + ${accountBalance}"></p>
 					</div>
 					<div class="feature">
-						<h2>소비달력</h2>
+						<div class="subtitle">
+							<i class="fi fi-br-payroll-calendar"></i>
+							<h2>소비달력</h2>
+						</div>
 						<p th:text="'이번 달 지출: ' + ${monthlyExpense}"></p>
 					</div>
 					<div class="feature">
-						<h2>소비분석</h2>
+						<div class="subtitle">
+							<i class="fi fi-br-chart-pie-simple-circle-dollar"></i>
+							<h2>소비분석</h2>
+						</div>
 						<p th:text="'주요 지출: ' + ${mainSpending}"></p>
 					</div>
 					<div class="feature">
-						<h2>습관저금통</h2>
+						<div class="subtitle">
+							<i class="fi fi-br-piggy-bank"></i>
+							<h2>습관저금통</h2>
+						</div>
 						<p th:text="'저금: ' + ${habitSaving}"></p>
 					</div>
 				</div>
