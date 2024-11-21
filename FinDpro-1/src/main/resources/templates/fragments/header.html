@@ -4,22 +4,20 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-    <link rel="stylesheet" th:href="@{/css/header-footer.css}">
-
 </head>
 
 <body>
-<div th:fragment="header">
-    <nav class="nav">
-        <div class="navbar-container">
-            <div class="logo">Fin.D</div> <!-- 왼쪽에 로고 -->
-            <div class="user-info">
-                <span th:text="${userName} + ' 님'">사용자</span> <!-- 사용자 이름 -->
-                <a href="/logout">로그아웃</a> <!-- 로그아웃 버튼 -->
-            </div>
-        </div>
-    </nav>
-</div>
+	<div th:fragment="header">
+		<nav class="nav">
+			<div class="navbar-container">
+				<div class="logo">Fin.D</div> <!-- 왼쪽에 로고 -->
+				<div class="nav-info">
+					<span th:text="${userName} + ' 님'">사용자</span> <!-- 사용자 이름 -->
+					<a href="/logout">로그아웃</a> <!-- 로그아웃 버튼 -->
+				</div>
+			</div>
+		</nav>
+	</div>
 
 </body>
 
