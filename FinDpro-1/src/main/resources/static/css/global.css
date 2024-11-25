@@ -32,7 +32,7 @@
 /* 전체 화면을 100% 차지하도록 설정 */
 html,
 body {
-	font-family: RiaSans-ExtraBold, sans-serif;
+	font-family: RiaSans-ExtraBold, sans-serif !important;
 	height: 100%;
 	margin: 0;
 	padding: 0;
