@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fin.D</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/header-footer.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    
+</head>
+<body>
+ <header th:insert="fragments/header :: header"></header>
+
+    <!-- 달력 및 통계 박스 영역 -->
+    <div class="container">
+        <div class="row mt-4">
+            <!-- 달력 테이블 -->
+            <div class="col-md-8">
+                <div class="calendar-nav">
+                    <button class="btn btn-primary" onclick="changeMonth(-1)">&lt;</button> <!-- '<' 기호로 변경 -->
+                    <h4 id="calendar-month"></h4>
+                    <button class="btn btn-primary" onclick="changeMonth(1)">&gt;</button> <!-- '>' 기호로 변경 -->
+                </div>
+
+                <table class="calendar-table">
+                    <thead>
+                        <tr>
+                            <th>일</th>
+                            <th>월</th>
+                            <th>화</th>
+                            <th>수</th>
+                            <th>목</th>
+                            <th>금</th>
+                            <th>토</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                        <!-- 달력 내용은 여기에 동적으로 추가됩니다. -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 통계 박스 -->
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <h5 id="stats-title"><span id="stats-month">2024년 11월</span></h5>
+                    <div class="stat-item">
+                        <strong>커피:</strong> <span id="income">0 원</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>담배&술:</strong> <span id="expense">0 원</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>월 저금 현황:</strong> <span id="consumption-rate">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 팝업을 위한 오버레이 및 팝업 컨테이너 -->
+    <div id="overlay" class="overlay"></div>
+    <div id="popup" class="popup-container">
+        <h5>오늘의 저금</h5>
+        <button class="btn btn-success" onclick="addExpense('coffee')">커피</button>
+        <button class="btn btn-danger" onclick="addExpense('tobacco')">담배</button>
+        <button class="btn btn-warning" onclick="addExpense('alcohol')">술</button>
+        <button class="btn btn-secondary" onclick="closePopup()">닫기</button>
+    </div>
+
+    <!-- 푸터 -->
+    <header th:insert="fragments/footer :: footer"></header>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let currentDate = new Date();
+        let selectedDate = null; // 사용자가 선택한 날짜를 저장
+        const expenses = {}; // 날짜별 소비 항목을 저장할 객체
+
+        // 예시 재정 데이터 (월별로 통계 정보 저장)
+        const monthlyStatsData = {
+            "2024-01": { income: 2500000, expense: 1800000, consumptionRate: 40 },
+            "2024-02": { income: 2200000, expense: 1600000, consumptionRate: 30 },
+            "2024-03": { income: 2400000, expense: 2000000, consumptionRate: 45 },
+            "2024-04": { income: 2300000, expense: 1900000, consumptionRate: 35 },
+            // 더 많은 월별 데이터 추가 가능
+        };
+
+        // 월을 바꿔주는 함수
+        function changeMonth(increment) {
+            currentDate.setMonth(currentDate.getMonth() + increment);
+            renderCalendar();
+        }
+
+        // 날짜 선택 시 호출될 함수
+        function selectDate(day) {
+            selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+            showPopup();
+        }
+
+        // 팝업을 보여주는 함수
+        function showPopup() {
+            // 팝업을 보이고, 오버레이를 활성화
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        // 팝업을 닫는 함수
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // 소비 항목을 추가하는 함수
+        function addExpense(expenseType) {
+            const dateKey = `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1 < 10 ? '0' + (selectedDate.getMonth() + 1) : selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
+            if (!expenses[dateKey]) {
+                expenses[dateKey] = {};
+            }
+
+            if (!expenses[dateKey][expenseType]) {
+                expenses[dateKey][expenseType] = true; // 선택한 소비 항목을 저장
+                console.log(`${dateKey}에 ${expenseType} 추가`);
+                
+                // 달력 업데이트
+                renderCalendar();
+            }
+
+            closePopup(); // 팝업 닫기
+        }
+
+        // 달력을 렌더링하는 함수
+        function renderCalendar() {
+            const month = currentDate.getMonth();
+            const year = currentDate.getFullYear();
+
+            // 월과 연도 표시
+            const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+            const monthName = monthNames[month];
+            document.getElementById("calendar-month").textContent = `${monthName} ${year}`;
+
+            // 통계 제목에 월 추가
+            document.getElementById("stats-month").textContent = `${year}년 ${monthName}`;
+
+            // 월별 통계 업데이트
+            const statsKey = `${year}-${month + 1 < 10 ? '0' + (month + 1) : month + 1}`;
+            const stats = monthlyStatsData[statsKey] || { income: 0, expense: 0, consumptionRate: 0 };
+            document.getElementById("income").textContent = `${stats.income} 원`;
+            document.getElementById("expense").textContent = `${stats.expense} 원`;
+            document.getElementById("consumption-rate").textContent = `${stats.consumptionRate}%`;
+
+            // 달력의 첫 날 구하기
+            const firstDay = new Date(year, month, 1);
+            const lastDate = new Date(year, month + 1, 0); // 월의 마지막 날
+
+            // 첫 날의 요일
+            const startDay = firstDay.getDay();
+
+            // 마지막 날의 날짜
+            const totalDays = lastDate.getDate();
+
+            let calendarHTML = "";
+            let dayCount = 1;
+
+            // 첫 번째 주 만들기
+            for (let i = 0; i < 6; i++) {
+                calendarHTML += "<tr>";
+
+                // 각 주에 대해 날짜 추가
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < startDay) {
+                        // 첫 주에서 시작일 전은 빈칸
+                        calendarHTML += "<td></td>";
+                    } else if (dayCount > totalDays) {
+                        // 날짜가 마지막 날짜를 초과하면 종료
+                        break;
+                    } else {
+                        const dateKey = `${year}-${month + 1 < 10 ? '0' + (month + 1) : month + 1}-${dayCount < 10 ? '0' + dayCount : dayCount}`;
+                        let cellContent = dayCount;
+                        
+                        // 날짜에 소비 항목이 있으면 표시
+                        if (expenses[dateKey]) {
+                            const expenseText = [];
+                            if (expenses[dateKey].coffee) expenseText.push('커피');
+                            if (expenses[dateKey].tobacco) expenseText.push('담배');
+                            if (expenses[dateKey].alcohol) expenseText.push('술');
+                            cellContent += `<br><small>${expenseText.join(', ')}</small>`;
+                        }
+
+                        calendarHTML += `<td onclick="selectDate(${dayCount})">${cellContent}</td>`;
+                        dayCount++;
+                    }
+                }
+
+                calendarHTML += "</tr>";
+
+                if (dayCount > totalDays) break; // 날짜가 끝났으면 종료
+            }
+
+            document.getElementById("calendar-body").innerHTML = calendarHTML;
+        }
+
+        // 페이지 로드 시 달력 렌더링
+        renderCalendar();
+    </script>
+</body>
+</html>

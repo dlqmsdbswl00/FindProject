@@ -19,4 +19,24 @@ public class HomeController {
 
 		return "home"; // home.html 템플릿으로 이동
 	}
+
+	@GetMapping("/account")
+	public String account() {
+		return "account"; // account.html 템플릿으로 이동
+	}
+
+	@GetMapping("/calmoney")
+	public String calmoney() {
+		return "calmoney"; // calmoney.html 템플릿으로 이동
+	}
+
+	@GetMapping("/analysis")
+	public String analysis() {
+		return "analysis"; // analysis.html 템플릿으로 이동
+	}
+
+	@GetMapping("/savemoney")
+	public String savemoney() {
+		return "savemoney"; // savemoney.html 템플릿으로 이동
+	}
 }
