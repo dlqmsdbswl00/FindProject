@@ -2,12 +2,18 @@
 
 /* global.css */
 :root {
-	--find-main-color: #000080;
+	--find-main-color: #24436b;
+	--find-sub-color: #404756;
+	--find-subsub-color: ##a4abbd;
+	--find-white-color: #F4F7FB;
+	--find-black-color: #05050F;
+
+	
 }
 
 /* 모든 요소에 box-sizing 적용 */
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* 전체 화면을 100% 차지하도록 설정 */
@@ -19,17 +25,19 @@ body {
 	padding: 0;
 	display: flex;
 	flex-direction: column;
-	background-color: #ffffff;
+	background-color: var(--find-white-color);
 }
 
 /* 콘텐츠 영역 */
 main {
-	flex-grow: 1; /* main 영역이 남은 공간을 차지하게 함 */
+	flex-grow: 1;
+	/* main 영역이 남은 공간을 차지하게 함 */
 	min-height: 100%;
-	padding-bottom: 60px; /* footer와 간격을 추가 */
+	padding-bottom: 60px;
+	/* footer와 간격을 추가 */
 	justify-content: space-between;
 	display: flex;
-    flex-direction: column;
+	flex-direction: column;
 	align-items: center;
 	/* 세로 방향 가운데 정렬 */
 
