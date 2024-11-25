@@ -7,12 +7,12 @@
 </head>
 
 <body>
-	<div th:fragment="header">
-		<nav class="nav">
+	<div class="header" th:fragment="header">
+		<nav>
 			<div class="navbar-container">
 				<a th:href="@{/}" class="logo">Fin.D</a> <!-- 왼쪽에 로고 -->
 				<div class="nav-info">
-					<a th:href="@{/User/mypage}" th:text= "${userName ?: '게스트'}+'님'"></a> <!-- 사용자 이름 -->
+					<a th:href="@{/User/mypage}" th:text="${userName ?: '게스트'}+'님'"></a> <!-- 사용자 이름 -->
 					<a href="/logout">로그아웃</a> <!-- 로그아웃 버튼 -->
 				</div>
 			</div>
