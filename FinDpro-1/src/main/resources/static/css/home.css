@@ -15,22 +15,28 @@
 	flex: 2;
 	/* 상단 영역 비율을 2로 설정 */
 	width: 80%;
+	display: flex;
+	flex-direction: column; /* 내부 콘텐츠를 세로로 배치 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
 	text-align: center;
 	background-color: #fff;
-	margin: 10px;
+	margin: 10px auto;
 	padding: 5px;
-	border-radius: 20px;
+	border-radius: 30px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .main-top h1 {
 	font-size: 36px;
 	margin: 0;
+	text-align: center;
 }
 
 .main-top p {
 	font-size: 18px;
-	color: #777;
+	color: var(--find-sub-color);
+	text-align: center;
 }
 
 /* 하단 영역 */
@@ -41,7 +47,6 @@
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
-	gap: 20px;
 }
 
 
@@ -106,6 +111,7 @@
 	flex: 7;
 	display: flex;
 	flex-wrap: wrap;
+	padding:20px;
 	width: 80%;
 	height: auto;
 	align-items: center;
@@ -181,7 +187,7 @@
 	width: 100%;
 	flex: 8;
 	/* 하단 부분을 8로 설정 */
-	font-size: 14px;
+	font-size: 20px;
 	color: var(--find-sub-color);
 	;
 }

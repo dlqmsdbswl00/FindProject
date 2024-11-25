@@ -11,7 +11,7 @@ public class HomeController {
 	@GetMapping("/")
 	public String home(Model model) {
 		// 사용자 정보를 모델에 추가 (임시 데이터)
-		model.addAttribute("userName", "임시 사용자");
+		model.addAttribute("userName", "가나다");
 		model.addAttribute("accountBalance", "10,000,000 원");
 		model.addAttribute("monthlyExpense", "180,000 원");
 		model.addAttribute("mainSpending", "식비 40%");

@@ -33,7 +33,7 @@ public class UserController {
     public String myPage(Model model /*, @AuthenticationPrincipal CustomUserDetails userDetails */) {
         // TODO: 로그인한 사용자 정보 가져오는 로직
         // 임시 데이터로 사용자 이름 전달
-        model.addAttribute("userName", "임시 사용자");
+        model.addAttribute("userName", "가나다");
         return "User/mypage"; // mypage.html 템플릿 반환
     }
 }
