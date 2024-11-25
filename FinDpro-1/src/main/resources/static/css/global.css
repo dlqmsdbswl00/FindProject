@@ -1,30 +1,56 @@
 @charset "UTF-8";
+@font-face {
+    font-family: 'RiaSans-ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/RiaSans-ExtraBold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 /* global.css */
 :root {
-	--find-main-color: #000080;
+	--find-main-color: #24436b;
+	--find-sub-color: #404756;
+	--find-subsub-color: ##a4abbd;
+	--find-white-color: #F4F7FB;
+	--find-black-color: #05050F;
+
+	
+}
+
+/* 모든 요소에 box-sizing 적용 */
+* {
+	box-sizing: border-box;
 }
 
 /* 전체 화면을 100% 차지하도록 설정 */
 html,
 body {
+	font-family: RiaSans-ExtraBold, sans-serif !important;
 	height: 100%;
 	margin: 0;
 	padding: 0;
 	display: flex;
 	flex-direction: column;
-	background-color: #ffffff;
+	background-color: var(--find-white-color);
 }
 
 /* 콘텐츠 영역 */
 main {
-
 	flex-grow: 1;
 	/* main 영역이 남은 공간을 차지하게 함 */
-	padding-bottom: 20px;
-	/* main과 footer 사이에 여백을 추가 */
+	min-height: 100%;
+	padding-bottom: 60px;
+	/* footer와 간격을 추가 */
 	justify-content: space-between;
-	/* 가로 방향 양 끝 정렬 */
+	display: flex;
+	flex-direction: column;
 	align-items: center;
 	/* 세로 방향 가운데 정렬 */
 

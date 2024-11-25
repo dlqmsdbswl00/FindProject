@@ -1,0 +1,147 @@
+@charset "UTF-8"; /* 전체 레이아웃 설정 */
+.main-content {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* 가로 방향 양 끝 정렬 */
+    align-items: center;
+    /* 세로 방향 가운데 정렬 */
+    margin: 20px;
+}
+
+/* 왼쪽 영역 (프로필 사진, 사용자명) */
+.left-side {
+    width: 40%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    /* 내부 여백 추가 */
+}
+
+.user-info {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    /* 사진과 사용자명 사이 간격 추가 */
+}
+
+/* 프로필 이미지 */
+.profile-pic {
+    width: 80%;
+    /* 부모의 너비 대비 80% */
+    max-width: 400px;
+    /* 최대 크기 제한 */
+    height: 380px;
+    /* 비율 유지 */
+    border-radius: 50%;
+    object-fit: cover;
+    /* 이미지 비율 유지하며 영역 채움 */
+    margin-left: -1300px;
+    margin-bottom: 100px;
+}
+
+/* 사용자명 */
+.user-info h1 {
+    width: 80%;
+    display: flex;
+    font-size: 50px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* 오른쪽 영역 (버튼들) */
+.right-side {
+    width: 60%;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 80px;
+}
+
+/* 버튼들을 2행 2열로 배치 */
+.features {
+    display: grid;
+    border-radius: 30px;
+    background-color: #e4ebf5;
+    /* 포인트 색상 사용 */
+    grid-template-columns: 1fr;
+    /* 1개의 열 */
+    gap: 10px;
+    padding: 10px;
+    height: 100%;
+    /* 버튼들이 부모의 높이를 차지하도록 */
+}
+
+/* 각 버튼 스타일 */
+.feature {
+    display: flex;
+    background-color: #ffffff;
+    /* 포인트 색상 사용 */
+    flex-direction: column;
+    /* 내용은 세로로 배치 */
+    justify-content: center;
+    /* 위쪽 정렬 */
+    align-items: center;
+    text-align: center;
+    border: 3px solid #e4ebf5;
+    /* 메인 색상으로 테두리 설정 */
+    border-radius: 30px;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+    /* hover 효과 */
+}
+
+/* subtitle 스타일 */
+.subtitle {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    /* 세로 가운데 정렬 */
+    color: var(--find-main-color);
+    /* 포인트 색 적용 */
+    margin-bottom: 10px;
+    /* 아래와의 간격 */
+}
+
+/* 아이콘 스타일 */
+.subtitle i {
+    font-size: 24px;
+    /* 아이콘 크기 */
+    margin-right: 10px;
+    /* 제목과의 간격 */
+}
+
+/* 제목 스타일 */
+.subtitle h2 {
+    font-size: 20px;
+    /* 제목 크기 */
+    margin: 0;
+    /* 기본 여백 제거 */
+    justify-content: center;
+    align-items: center;
+}
+
+/* 버튼 hover 시 효과 */
+.feature:hover {
+    transform: scale(1.05);
+    /* 버튼 크기 살짝 확대 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    /* 그림자 추가 */
+}
+
+/* 각 버튼의 내용 */
+.feature p {
+    font-size: 14px;
+    color: #555;
+}
+
+
