@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layouts/layout}">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <style type="text/css">
+        body {
+            background-color: #f2f2f2;
+        }
+
+        .cal {
+            width: 100%;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .cal #thead > div, .cal #tbody > div {
+            background-color: #FFFFFF;
+            width: 140px;
+            height: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .cal #tbody > div {
+            height: 120px;
+            vertical-align: top;
+            border-top: 0.5px solid #3498db;
+        }
+
+        .cal #thead {
+            text-align: center;
+            display: inline-block;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .cal #thead > div {
+           width: 140px;
+        }
+
+        #ctitle {
+        -webkit-border-radius: 12px 12px 0px 0px;
+        -moz-border-radius: 12px 12px 0px 0px;
+        border-radius: 12px 12px 0px 0px;
+        width: 1010px;
+        height: 60px;
+        text-align: center;
+        background-color: #3498db;
+        padding: 18px 0;
+        font-size: 28px;
+        color: #FFFFFF;
+        float: left;
+        line-height : 10px;
+    }
+
+        .pen {
+            width: 20px;
+            height: 20px;
+        }
+
+        .d {
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        #tbody > div > p {
+            background-color: rgb(128, 128, 128);
+            color: white;
+        }
+
+        .cp {
+            position: absolute;
+            left: 20px;
+            top: -40px;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px 20px 20px 1px;
+            color: white;
+            background-color: rgb(255, 128, 0);
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+
+<script type="text/javascript">
+</script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="container1">
+        <div id="list"></div>
+        <input type="hidden" th:value="${ykiho}" id="ykiho" />
+        <input type="hidden" th:value="${yadmNm}" id="yadmNm" />
+        <div class="cal">
+            <div id="ctitle">
+                <a th:href="@{/cal/userCal(year=${calMap.year-1},month=${calMap.month})}"><i class="fas fa-chevron-left"
+                                                                                                      style="color: #ffffff;"></i></a>
+                <a th:href="@{/cal/userCal(year=${calMap.year},month=${calMap.month-1})}"><i class="fas fa-chevron-left"
+                                                                                                              style="color: #ffffff;"></i></a>
+                <span class="y" th:text="${calMap.year}"></span>
+                <span>년</span>
+                <span class="m" th:text="${calMap.month}"></span>
+                <span>월</span>
+                <a th:href="@{/cal/userCal(year=${calMap.year},month=${calMap.month+1})}"><i class="fas fa-chevron-right"
+                                                                                                               style="color: #ffffff;"></i></a>
+                <a th:href="@{/cal/userCal(year=${calMap.year+1},month=${calMap.month})}"><i class="fas fa-chevron-right"
+                                                                                                               style="color: #ffffff;"></i></a>
+            </div>
+            <div id="thead">
+                <div>일</div>
+                <div>월</div>
+                <div>화</div>
+                <div>수</div>
+                <div>목</div>
+                <div>금</div>
+                <div>토</div>
+            </div>
+            <div id="tbody">
+    <th:block th:if="${calMap.dayOfWeek>1}">
+        <div th:each="num:${#numbers.sequence(1,calMap.dayOfWeek-1)}">&nbsp;</div>
+    </th:block>
+    
+    <th:block th:each="i, iterStat : ${#numbers.sequence(1,calMap.lastDay)}">
+        <div>
+            <a class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i, calMap.dayOfWeek)}"
+               
+            ></a>
+
+            [(${@util.getCalViewList(i,clist)})]
+        </div>
+        
+        <!-- Calculate the remaining empty cells -->
+        <th:block th:if="${iterStat.last}">
+            <div th:each="num : ${#numbers.sequence(1, 7 - ((calMap.dayOfWeek - 1 + iterStat.count) % 7))}">&nbsp;</div>
+        </th:block>
+    </th:block>
+</div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

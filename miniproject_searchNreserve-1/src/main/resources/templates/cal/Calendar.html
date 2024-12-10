@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>달력</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calendar-container {
+            width: 80%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        #calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            font-size: 20px;
+        }
+
+        #calendar-header a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #thead {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color: #e9ecef;
+            text-align: center;
+            font-weight: bold;
+            color: #3498db;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #tbody {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+        }
+
+        #tbody div {
+            height: 100px;
+            text-align: right;
+            padding: 10px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        #tbody div:hover {
+            background-color: #f8f9fa;
+        }
+
+        .day {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .sunday {
+            color: red;
+        }
+
+        .saturday {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <!-- 달력 헤더 -->
+        <div id="calendar-header">
+            <a th:href="@{/cal/calendar(year=${calMap.year-1},month=${calMap.month})}"><i class="fas fa-chevron-left"></i> 이전 연도</a>
+            <span><span th:text="${calMap.year}"></span>년 <span th:text="${calMap.month}"></span>월</span>
+            <a th:href="@{/cal/calendar(year=${calMap.year+1},month=${calMap.month})}">다음 연도 <i class="fas fa-chevron-right"></i></a>
+        </div>
+
+        <!-- 요일 헤더 -->
+        <div id="thead">
+            <div>일</div>
+            <div>월</div>
+            <div>화</div>
+            <div>수</div>
+            <div>목</div>
+            <div>금</div>
+            <div>토</div>
+        </div>
+
+        <!-- 날짜 -->
+        <div id="tbody">
+            <!-- 공백 -->
+            <th:block th:if="${calMap.dayOfWeek > 1}">
+                <div th:each="num : ${#numbers.sequence(1, calMap.dayOfWeek-1)}">&nbsp;</div>
+            </th:block>
+
+            <!-- 날짜 표시 -->
+            <th:block th:each="i : ${#numbers.sequence(1, calMap.lastDay)}">
+                <div>
+                    <span class="day" th:classappend="${i == 1 ? 'sunday' : ''}" th:text="${i}"></span>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</body>
+</html>
