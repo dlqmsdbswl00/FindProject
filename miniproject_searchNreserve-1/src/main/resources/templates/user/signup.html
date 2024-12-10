@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/signuplayout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	//사용자 인증 요청하기(사용자 인증하면서 계좌등록까지 진행함)
+	function authorization() {
+		var url = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
+				+ "response_type=code&" //고정값 code: 인증요청시 반환되는 값의 형식의미
+				+ "client_id=4987e938-f84b-4e23-b0a2-3b15b00f4ffd&" //이용기관의 ID
+				+ "redirect_uri=http://localhost:8087/user/authresult&"//응답URL
+				+ "scope=login inquiry transfer&" //토큰의 권한
+				+ "state=12345678123456781234567812345678&" //32자리 난수 설정
+				+ "auth_type=0"; //0:최초 한번 인증, 2:인증생략
+
+		window.open(url, "인증하기", "width=400px,height=600px");
+	}
+</script>
+<style type="text/css">
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<form action="/user/addUser" method="post">
+			<input type="hidden" name="useraccesstoken" class="form-control" />
+			<input type="hidden" name="userrefreshtoken" class="form-control" />
+			<input type="hidden" name="userseqno" class="form-control" />
+			<table class="table">
+				<tr>
+					<th>이메일</th>
+					<td><input type="email" name="email" class="form-control" /></td>
+				</tr>
+				<tr>
+					<th>이름</th>
+					<td><input type="text" name="name" class="form-control" /></td>
+				</tr>
+				<tr>
+					<th>비밀번호</th>
+					<td><input type="password" name="password"
+						class="form-control" /></td>
+				</tr>
+				<tr>
+					<th>주소</th>
+					<td><input type="text" name="address" class="form-control" /></td>
+				</tr>
+				<tr>
+					<th>생일</th>
+					<td><input type="text" name="birth" class="form-control" /></td>
+				</tr>
+				<tr>
+					<th>휴대폰</th>
+					<td><input type="text" name="phone" class="form-control" /></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="button" value="인증하기" onclick="authorization()" class="btn" /> 
+						<input type="submit" value="가입하기" class="btn">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

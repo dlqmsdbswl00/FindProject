@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>유저 정보</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 60%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center; /* Center-align text in table cells */
+            border-bottom: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            text-align: center; /* Center-align text within input fields */
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #2078c3; /* 수정 버튼 색상 */
+            color: #fff;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #205b8c;
+        }
+
+        button[type="button"] {
+            background-color: #2078c3; /* 탈퇴 버튼 색상 */
+            color: #fff;
+        }
+
+        button[type="button"]:hover {
+            background-color: #205b8c;
+        }
+    </style>
+    <script type="text/javascript">
+        function delUser() {
+            location.href = "/user/delUser";
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>유저 정보</h1>
+    <div id="container">
+        <form action="/user/userUpdate" method="post">
+            <table>
+                <tr>
+                    <th>이메일</th>
+                    <td>
+                        <input type="email" name="email" th:value="${dto.email}" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>이름</th>
+                    <td>
+                        <input type="text" name="name" th:value="${dto.name}" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>주소</th>
+                    <td>
+                        <input type="text" name="address" th:value="${dto.address}" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>생년월일</th>
+                    <td>
+                        <input type="text" name="birth" th:value="${dto.birth}" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>휴대폰</th>
+                    <td>
+                        <input type="text" name="phone" th:value="${dto.phone}" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">수정</button>
+                        <button type="button" onclick="delUser()">탈퇴</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>
