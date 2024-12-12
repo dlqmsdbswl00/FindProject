@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/signuplayout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<!--layout:decorate="~{layouts/signuplayout}"-->
+
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -19,10 +20,12 @@
 		window.open(url, "인증하기", "width=400px,height=600px");
 	}
 </script>
-<style type="text/css">
-</style>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
+	<link rel="stylesheet" th:href="@{/css/global.css}">
 </head>
 <body>
+<header th:insert="fragments/header :: header"></header>
 	<div layout:fragment="content">
 		<form action="/user/addUser" method="post">
 			<input type="hidden" name="useraccesstoken" class="form-control" />
@@ -63,5 +66,6 @@
 			</table>
 		</form>
 	</div>
+	<footer th:insert="fragments/footer :: footer"></footer>
 </body>
 </html>

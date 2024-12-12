@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.board.command.UserUpdateCommand;
 import com.board.dtos.CalDto;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     // 로그인 처리
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public String login(UserDto dto, HttpServletRequest request, Model model) {
         UserDto ldto = userService.loginUser(dto);
 
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     // 로그아웃 처리
-    @GetMapping("/logout")
+    @GetMapping("/user/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate(); // 세션 초기화
@@ -94,7 +95,7 @@ public class UserController {
     }
 
     // 회원가입 처리
-    @PostMapping("/addUser")
+    @PostMapping("/user/addUser")
     public String addUser(UserDto dto) {
         boolean isS = userService.addUser(dto);
         if (isS) {
@@ -140,7 +141,7 @@ public class UserController {
     }
 
     // 유저 정보 수정 페이지 이동
-    @GetMapping("/userInfo")
+    @GetMapping("/user/info")
     public String userInfoPage(Model model, HttpServletRequest request) {
         UserDto dto = userService.userInfo(request);
         model.addAttribute("dto", dto);
@@ -148,7 +149,7 @@ public class UserController {
     }
 
     // 유저 정보 수정 처리
-    @PostMapping("/userUpdate")
+    @PostMapping("/user/update")
     public String updateUser(@Validated UserUpdateCommand userUpdateCommand, BindingResult result) {
         if (result.hasErrors()) {
             System.out.println("수정 내용이 잘못되었습니다.");

@@ -43,15 +43,11 @@ body {
 
 /* 콘텐츠 영역 */
 main {
-	flex-grow: 1;
-	/* main 영역이 남은 공간을 차지하게 함 */
-	min-height: 100%;
+	min-height: 100vh;
 	padding-bottom: 60px;
 	/* footer와 간격을 추가 */
-	justify-content: space-between;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
-	/* 세로 방향 가운데 정렬 */
-
 }
