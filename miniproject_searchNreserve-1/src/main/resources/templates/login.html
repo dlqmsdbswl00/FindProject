@@ -1,112 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
-    <meta charset="UTF-8">
-    <title>FinD 로그인</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            width: 400px;
-            padding: 40px;
-            background: #ffffff;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 10px;
-        }
-
-        .sub-text {
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            text-align: left;
-            margin-bottom: 15px;
-        }
-
-        label {
-            font-size: 14px;
-            color: #333;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            background: #007bff;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .btn-login:hover {
-            background: #0056b3;
-        }
-
-        .helper-links {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #777;
-        }
-
-        .helper-links a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .helper-links a:hover {
-            text-decoration: underline;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<title>FinD 로그인</title>
+	<!-- 외부 CSS 파일 연결 -->
+	<link rel="stylesheet" th:href="@{/css/login.css}">
+	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
+	<link rel="stylesheet" th:href="@{/css/global.css}">
 </head>
+
 <body>
-    <div class="container">
-        <div class="logo">🔍 FinD</div>
-        <div class="sub-text">금융의 새로운 발견, FinD에 로그인하세요</div>
-        <form action="/login" method="post">
-            <div class="form-group">
-                <label for="email">이메일</label>
-                <input type="email" id="email" name="email" placeholder="name@example.com" required>
-            </div>
-            <div class="form-group">
-                <label for="password">비밀번호</label>
-                <input type="password" id="password" name="password" placeholder="••••••" required>
-            </div>
-            <button type="submit" class="btn-login">로그인</button>
-        </form>
-        <div class="helper-links">
-            <p><a href="/user/reset-password">비밀번호를 잊으셨나요?</a></p>
-            <p>계정이 없으신가요? <a href="/signup">회원가입</a></p>
-        </div>
-    </div>
+	<header th:insert="fragments/header :: header"></header>
+
+	<main class="container">
+		<form action="/login" method="post">
+			<div class="logo">🔍 FinD</div>
+			<div class="sub-text">금융의 새로운 발견, FinD에 로그인하세요</div>
+			<div class="form-group">
+				<label for="email">이메일</label>
+				<input type="email" id="email" name="email" placeholder="name@example.com" required>
+			</div>
+			<div class="form-group">
+				<label for="password">비밀번호</label>
+				<input type="password" id="password" name="password" placeholder="••••••" required>
+			</div>
+			<button type="submit" class="btn-login">로그인</button>
+			<p><a href="/user/reset-password">비밀번호를 잊으셨나요?</a></p>
+			<p>계정이 없으신가요? <a href="/signup">회원가입</a></p>
+		</form>
+	</main>
+
+	<footer th:insert="fragments/footer :: footer"></footer>
+
 </body>
+
 </html>
