@@ -17,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.board.command.UserUpdateCommand;
 import com.board.dtos.CalDto;
@@ -45,7 +44,7 @@ public class UserController {
     }
 
     // 로그인 처리
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public String login(UserDto dto, HttpServletRequest request, Model model) {
         UserDto ldto = userService.loginUser(dto);
 
@@ -62,7 +61,7 @@ public class UserController {
     }
 
     // 로그아웃 처리
-    @GetMapping("/user/logout")
+    @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate(); // 세션 초기화
@@ -95,7 +94,7 @@ public class UserController {
     }
 
     // 회원가입 처리
-    @PostMapping("/user/addUser")
+    @PostMapping("/addUser")
     public String addUser(UserDto dto) {
         boolean isS = userService.addUser(dto);
         if (isS) {
@@ -107,7 +106,7 @@ public class UserController {
     }
 
     // 사용자 인증 후 토큰 발급 처리
-    @GetMapping("/authresult")
+    @GetMapping("/user/authresult")
     public String authResult(String code, Model model) throws IOException, ParseException {
         HttpURLConnection conn;
         JSONObject result;
@@ -116,7 +115,7 @@ public class UserController {
                 + "code=" + code
                 + "&client_id=4987e938-f84b-4e23-b0a2-3b15b00f4ffd"
                 + "&client_secret=3ff7570f-fdfb-4f9e-8f5a-7b549bf2adec"
-                + "&redirect_uri=http://localhost:8087/authresult"
+                + "&redirect_uri=http://localhost:8087/user/authresult"
                 + "&grant_type=authorization_code");
 
         conn = (HttpURLConnection) url.openConnection();
@@ -130,7 +129,7 @@ public class UserController {
         while ((responseLine = br.readLine()) != null) {
             response.append(responseLine.trim());
         }
-
+        System.out.println("결과:"+response.toString());
         result = (JSONObject) new JSONParser().parse(response.toString());
 
         model.addAttribute("access_token", result.get("access_token").toString());
@@ -141,7 +140,7 @@ public class UserController {
     }
 
     // 유저 정보 수정 페이지 이동
-    @GetMapping("/user/info")
+    @GetMapping("/userInfo")
     public String userInfoPage(Model model, HttpServletRequest request) {
         UserDto dto = userService.userInfo(request);
         model.addAttribute("dto", dto);
@@ -149,7 +148,7 @@ public class UserController {
     }
 
     // 유저 정보 수정 처리
-    @PostMapping("/user/update")
+    @PostMapping("/userUpdate")
     public String updateUser(@Validated UserUpdateCommand userUpdateCommand, BindingResult result) {
         if (result.hasErrors()) {
             System.out.println("수정 내용이 잘못되었습니다.");
@@ -180,23 +179,23 @@ public class UserController {
     public String userUseMoney() {
         return "user/userUseMoney";
     }
-	@GetMapping("/account")
-	public String account() {
-		return "account"; // account.html 템플릿으로 이동
-	}
+   @GetMapping("/account")
+   public String account() {
+      return "account"; // account.html 템플릿으로 이동
+   }
 
-	@GetMapping("/calmoney")
-	public String calmoney() {
-		return "calmoney"; // calmoney.html 템플릿으로 이동
-	}
+   @GetMapping("/calmoney")
+   public String calmoney() {
+      return "calmoney"; // calmoney.html 템플릿으로 이동
+   }
 
-	@GetMapping("/analysis")
-	public String analysis() {
-		return "analysis"; // analysis.html 템플릿으로 이동
-	}
+   @GetMapping("/analysis")
+   public String analysis() {
+      return "analysis"; // analysis.html 템플릿으로 이동
+   }
 
-	@GetMapping("/savemoney")
-	public String savemoney() {
-		return "savemoney"; // savemoney.html 템플릿으로 이동
-	}
+   @GetMapping("/savemoney")
+   public String savemoney() {
+      return "savemoney"; // savemoney.html 템플릿으로 이동
+   }
 }
