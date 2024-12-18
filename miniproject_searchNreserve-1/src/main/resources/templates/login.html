@@ -11,7 +11,7 @@
 </head>
 
 <body>
-	<header th:insert="fragments/header :: header"></header>
+	<header th:insert="~{fragments/header :: header}"></header>
 
 	<main class="container">
 		<form action="/user/login" method="post">
@@ -31,7 +31,7 @@
 		</form>
 	</main>
 
-	<footer th:insert="fragments/footer :: footer"></footer>
+	<footer th:insert="~{fragments/footer :: footer}"></footer>
 
 </body>
 
