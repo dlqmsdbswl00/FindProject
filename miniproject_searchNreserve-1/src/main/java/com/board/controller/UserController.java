@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/user")
+//@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
@@ -46,12 +46,12 @@ public class UserController {
 	}
 
 	// 로그인 처리
-	@GetMapping("/login")
+	@GetMapping("/user/login")
 	public String loginPage() {
-	    return "login"; // 로그인 페이지 반환
+		return "login"; // 로그인 페이지 반환
 	}
 
-	@PostMapping("/login")
+	@PostMapping("/user/login")
 	public String login(UserDto dto, HttpServletRequest request, Model model) {
 		UserDto ldto = userService.loginUser(dto);
 
@@ -103,6 +103,7 @@ public class UserController {
 	// 회원가입 처리
 	@PostMapping("/addUser")
 	public String addUser(UserDto dto) {
+		System.out.println(dto);
 		boolean isS = userService.addUser(dto);
 		if (isS) {
 			System.out.println("회원가입 성공");
@@ -113,33 +114,56 @@ public class UserController {
 	}
 
 	// 사용자 인증 후 토큰 발급 처리
-	@GetMapping("/user/authresult")
+	@GetMapping("/authresult")
 	public String authResult(String code, Model model) throws IOException, ParseException {
 		HttpURLConnection conn;
 		JSONObject result;
 
+		// 인증 요청 URL
 		URL url = new URL("https://testapi.openbanking.or.kr/oauth/2.0/token?" + "code=" + code
 				+ "&client_id=4987e938-f84b-4e23-b0a2-3b15b00f4ffd"
 				+ "&client_secret=3ff7570f-fdfb-4f9e-8f5a-7b549bf2adec"
-				+ "&redirect_uri=http://localhost:8087/user/authresult" + "&grant_type=authorization_code");
+				+ "&redirect_uri=http://localhost:8087/authresult" + "&grant_type=authorization_code");
 
 		conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		conn.setDoOutput(true);
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-		StringBuilder response = new StringBuilder();
-		String responseLine;
-		while ((responseLine = br.readLine()) != null) {
-			response.append(responseLine.trim());
-		}
-		System.out.println("결과:" + response.toString());
-		result = (JSONObject) new JSONParser().parse(response.toString());
+		// 응답 코드 확인
+		int responseCode = conn.getResponseCode();
+		System.out.println("응답 코드: " + responseCode); // 응답 코드 출력
 
-		model.addAttribute("access_token", result.get("access_token").toString());
-		model.addAttribute("refresh_token", result.get("refresh_token").toString());
-		model.addAttribute("user_seq_no", result.get("user_seq_no").toString());
+		// 정상 응답이 아닐 경우 에러 응답 확인
+		BufferedReader br;
+		if (responseCode != 200) {
+			br = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
+			StringBuilder errorResponse = new StringBuilder();
+			String errorLine;
+			while ((errorLine = br.readLine()) != null) {
+				errorResponse.append(errorLine.trim());
+			}
+			System.out.println("에러 응답 내용: " + errorResponse.toString()); // 에러 응답 출력
+
+			// 에러 응답 JSON 파싱 후 코드와 메시지 출력
+			JSONObject errorResult = (JSONObject) new JSONParser().parse(errorResponse.toString());
+			System.out.println("에러 코드: " + errorResult.get("rsp_code"));
+			System.out.println("에러 메시지: " + errorResult.get("rsp_message"));
+		} else {
+			// 정상 응답 처리
+			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+			StringBuilder response = new StringBuilder();
+			String responseLine;
+			while ((responseLine = br.readLine()) != null) {
+				response.append(responseLine.trim());
+			}
+			System.out.println("응답 내용: " + response.toString()); // 성공 응답 출력
+
+			result = (JSONObject) new JSONParser().parse(response.toString());
+			model.addAttribute("access_token", result.get("access_token").toString());
+			model.addAttribute("refresh_token", result.get("refresh_token").toString());
+			model.addAttribute("user_seq_no", result.get("user_seq_no").toString());
+		}
 
 		return "user/authresult";
 	}

@@ -8,7 +8,7 @@ public class UserUpdateCommand {
    private String name;
    
    private String address;
-   private int birth;
+   private String birth;
    
    
    private String phone;
@@ -17,7 +17,7 @@ public class UserUpdateCommand {
       super();
    }
 
-   public UserUpdateCommand(String email, String name, String address, int birth, String phone) {
+   public UserUpdateCommand(String email, String name, String address, String birth, String phone) {
       super();
       this.email = email;
       this.name = name;
@@ -56,11 +56,11 @@ public class UserUpdateCommand {
       this.address = address;
    }
 
-   public int getBirth() {
+   public String getBirth() {
       return birth;
    }
 
-   public void setBirth(int birth) {
+   public void setBirth(String birth) {
       this.birth = birth;
    }
 
