@@ -11,7 +11,7 @@ public class UserDto {
    private int userseqno; // 사용자 일련 번호
    
    private String address;
-   private int birth;
+   private String birth;
    private String phone;
    private String money;
    public UserDto() {
@@ -19,7 +19,7 @@ public class UserDto {
       // TODO Auto-generated constructor stub
    }
 public UserDto(String email, String name, String password, String useraccesstoken, String userrefreshtoken,
-		int userseqno, String address, int birth, String phone, String money) {
+		int userseqno, String address, String birth, String phone, String money) {
 	super();
 	this.email = email;
 	this.name = name;
@@ -80,10 +80,10 @@ public String getAddress() {
 public void setAddress(String address) {
 	this.address = address;
 }
-public int getBirth() {
+public String getBirth() {
 	return birth;
 }
-public void setBirth(int birth) {
+public void setBirth(String birth) {
 	this.birth = birth;
 }
 public String getPhone() {

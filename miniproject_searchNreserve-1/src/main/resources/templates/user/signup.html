@@ -11,7 +11,7 @@
 			var url = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
 				+ "response_type=code&" //고정값 code: 인증요청시 반환되는 값의 형식의미
 				+ "client_id=4987e938-f84b-4e23-b0a2-3b15b00f4ffd&" //이용기관의 ID
-				+ "redirect_uri=http://localhost:8087/user/authresult&"//응답URL
+				+ "redirect_uri=http://localhost:8087/authresult&"//응답URL
 				+ "scope=login inquiry transfer&" //토큰의 권한
 				+ "state=12345678123456781234567812345678&" //32자리 난수 설정
 				+ "auth_type=0"; //0:최초 한번 인증, 2:인증생략
@@ -22,16 +22,15 @@
 	<link rel="stylesheet" th:href="@{/css/login.css}">
 	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/global.css}">
+	</style>
 </head>
 
+
 <body>
-	<header th:insert="fragments/header :: header"></header>
+	<header th:insert="~{fragments/header :: header}"></header>
 
 	<main class="container">
-		<form action="/user/addUser" method="post">
-			<input type="hidden" name="useraccesstoken" class="form-control" />
-			<input type="hidden" name="userrefreshtoken" class="form-control" />
-			<input type="hidden" name="userseqno" class="form-control" />
+		<form action="/addUser" method="post">
 			<div class="logo">🔍 FinD</div>
 			<div class="sub-text">회원가입</div>
 			<div class="form-group">
@@ -59,6 +58,19 @@
 				<input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
 			</div>
 			<div class="form-group">
+				<label for="useraccesstoken">접근토큰</label>
+				<input name="useraccesstoken" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label for="userrefreshtoken">갱신토큰</label>
+				<input name="userrefreshtoken" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label for="userseqno">고유번호</label>
+				<input name="userseqno" class="form-control" />
+			</div>
+
+			<div class="form-group">
 				<button type="button" onclick="authorization()" class="btn">인증하기</button>
 				<button type="submit" class="btn">가입하기</button>
 			</div>
@@ -66,7 +78,7 @@
 		</form>
 	</main>
 
-	<footer th:insert="fragments/footer :: footer"></footer>
+	<footer th:insert="~{fragments/footer :: footer}"></footer>
 </body>
 
 </html>

@@ -2,11 +2,12 @@
 
 /* header 스타일 */
 header {
- 	width: 100% !important;
+	width: 100% !important;
 	background-color: var(--find-main-color) !important;
 	text-align: center !important;
-	padding: 10px !important;
 	position: relative !important;
+	box-sizing: border-box;
+	  z-index: 1000;
 }
 
 header .navbar-container {
@@ -14,13 +15,14 @@ header .navbar-container {
 	display: flex !important;
 	justify-content: space-between !important;
 	align-items: center !important;
+	width: 100%;
 }
 
 header .logo {
 	font-size: 28px !important;
 	font-weight: bold !important;
 	color: var(--find-white-color) !important;
-    text-decoration: none !important;
+	text-decoration: none !important;
 }
 
 header .nav-info {
@@ -31,8 +33,8 @@ header .nav-info {
 
 header .nav-info a {
 	font-size: 18px !important;
-    color: var(--find-white-color) !important;
-    text-decoration: none !important;
+	color: var(--find-white-color) !important;
+	text-decoration: none !important;
 }
 
 /* footer 스타일 */
@@ -46,7 +48,10 @@ footer {
 	position: relative !important;
 	bottom: 0 !important;
 	margin-top: auto !important;
-	/* 항상 화면 맨 아래에 위치하도록 설정 */
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 /* footer p 스타일 */
