@@ -168,6 +168,12 @@ public class UserController {
 		return "user/authresult";
 	}
 
+    // 마이페이지
+    @GetMapping("/user/mypage")
+    public String myPage() {
+        return "user/mypage"; // mypage.html 템플릿 반환
+    }
+    
 	// 유저 정보 수정 페이지 이동
 	@GetMapping("/userInfo")
 	public String userInfoPage(Model model, HttpServletRequest request) {
