@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.board.dtos.AccountDto;
 import com.board.dtos.CalDto;
+import com.board.dtos.ExpenseDto;
+import com.board.dtos.ExpenseMonDto;
 import com.board.dtos.UserDto;
 
 @Mapper
@@ -33,4 +35,12 @@ public interface UserMapper {
       public List<Map<String, Object>> dayUseMoney(String email);
       
       public List<Map<String, Object>> UpdateUseMoney(Map<String, String> map);
+      
+      public boolean insertExpense(ExpenseDto dto);
+      
+      public ExpenseMonDto monthlyExpense(Map<String, String> map);
+      
+      public List<ExpenseDto> monthlyExpenseList(Map<String, String> map);
+      
+      
 }

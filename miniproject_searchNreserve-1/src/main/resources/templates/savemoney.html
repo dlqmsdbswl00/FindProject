@@ -2,212 +2,363 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Fin.D</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" th:href="@{/css/style.css}">
-	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
-	<link rel="stylesheet" th:href="@{/css/global.css}">
+    <meta charset="UTF-8">
+    <title>Fin.D</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/header-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <style>
+        .expenses img {
+            width: 35px;
+            height: 35px;
+            margin-right: 4px;
+        }
 
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            z-index: 1000;
+        }
 
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
 </head>
 
 <body>
-	<header th:insert="fragments/header :: header"></header>
+    <header th:insert="fragments/header :: header"></header>
 
-	<!-- 달력 및 통계 박스 영역 -->
-	<div class="container">
-		<div class="row mt-4">
-			<!-- 달력 테이블 -->
-			<div class="col-md-8">
-				<div class="calendar-nav">
-					<button class="btn btn-primary" onclick="changeMonth(-1)">&lt;</button> <!-- '<' 기호로 변경 -->
-					<h4 id="calendar-month"></h4>
-					<button class="btn btn-primary" onclick="changeMonth(1)">&gt;</button> <!-- '>' 기호로 변경 -->
-				</div>
+    <!-- 달력 및 통계 박스 영역 -->
+    <div class="container">
+        <div class="row mt-4">
+            <!-- 달력 테이블 -->
+            <div class="col-md-8">
+                <div class="calendar-nav">
+                    <button class="btn btn-primary" onclick="changeMonth(-1)">&lt;</button>
+                    <h4 id="calendar-month"></h4>
+                    <button class="btn btn-primary" onclick="changeMonth(1)">&gt;</button>
+                </div>
 
-				<table class="calendar-table">
-					<thead>
-						<tr>
-							<th>일</th>
-							<th>월</th>
-							<th>화</th>
-							<th>수</th>
-							<th>목</th>
-							<th>금</th>
-							<th>토</th>
-						</tr>
-					</thead>
-					<tbody id="calendar-body">
-						<!-- 달력 내용은 여기에 동적으로 추가됩니다. -->
-					</tbody>
-				</table>
-			</div>
+                <table class="calendar-table">
+                    <thead>
+                        <tr>
+                            <th>일</th>
+                            <th>월</th>
+                            <th>화</th>
+                            <th>수</th>
+                            <th>목</th>
+                            <th>금</th>
+                            <th>토</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                        <!-- 달력 내용은 여기에 동적으로 추가됩니다. -->
+                    </tbody>
+                </table>
+            </div>
 
-			<!-- 통계 박스 -->
-			<div class="col-md-4">
-				<div class="stats-box">
-					<h5 id="stats-title"><span id="stats-month">2024년 11월</span></h5>
-					<div class="stat-item">
-						<strong>커피:</strong> <span id="income">0 원</span>
-					</div>
-					<div class="stat-item">
-						<strong>담배&술:</strong> <span id="expense">0 원</span>
-					</div>
-					<div class="stat-item">
-						<strong>월 저금 현황:</strong> <span id="consumption-rate">0%</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            <!-- 통계 박스 -->
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <h5 id="stats-title"><span id="stats-month">습관 저금통</span></h5>
 
-	<!-- 팝업을 위한 오버레이 및 팝업 컨테이너 -->
-	<div id="overlay" class="overlay"></div>
-	<div id="popup" class="popup-container">
-		<h5>오늘의 저금</h5>
-		<button class="btn btn-success" onclick="addExpense('coffee')">커피</button>
-		<button class="btn btn-danger" onclick="addExpense('tobacco')">담배</button>
-		<button class="btn btn-warning" onclick="addExpense('alcohol')">술</button>
-		<button class="btn btn-secondary" onclick="closePopup()">닫기</button>
-	</div>
+                    <div class="stat-item">
+                        <strong>커피:</strong> <span id="income">[[${dto.coffeeTotal}]]원</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>담배:</strong> <span id="expense">[[${dto.cigaretteTotal}]] 원</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>택시:</strong> <span id="taxi-expense">[[${dto.taxiTotal}]] 원</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>총 저금:</strong> <span id="consumption-rate">원</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<!-- 푸터 -->
-	<footer th:insert="fragments/footer :: footer"></footer>
+    <!-- 팝업을 위한 오버레이 및 팝업 컨테이너 -->
+    <div id="overlay" class="overlay"></div>
+    <div id="popup" class="popup-container">
+        <h5>오늘의 소비 항목 추가</h5>
+        <button class="btn btn-success" onclick="addExpense('커피')">커피</button>
+        <button class="btn btn-danger" onclick="addExpense('담배')">담배</button>
+        <button class="btn btn-warning" onclick="addExpense('택시')">택시</button>
+        <button class="btn btn-secondary" onclick="closePopup()">닫기</button>
+    </div>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-	<script>
-		let currentDate = new Date();
-		let selectedDate = null; // 사용자가 선택한 날짜를 저장
-		const expenses = {}; // 날짜별 소비 항목을 저장할 객체
+    <script>
+        let currentDate = new Date();
+        let selectedDate = null; // 사용자가 선택한 날짜를 저장
+        const expenses = {}; // 날짜별 소비 항목을 저장
+        const expensePrices = { // 각 소비 항목의 가격을 설정
+            '커피': 4000,
+            '담배': 4500,
+            '택시': 4200
+        };
+        let totalIncome = 0; // 총 수입 (커피)
+        let totalExpense = 0; // 총 지출 (담배 & 택시)
+        let totalTaxiExpense = 0; // 택시 지출
 
-		// 예시 재정 데이터 (월별로 통계 정보 저장)
-		const monthlyStatsData = {
-			"2024-01": {income: 2500000, expense: 1800000, consumptionRate: 40},
-			"2024-02": {income: 2200000, expense: 1600000, consumptionRate: 30},
-			"2024-03": {income: 2400000, expense: 2000000, consumptionRate: 45},
-			"2024-04": {income: 2300000, expense: 1900000, consumptionRate: 35},
-			// 더 많은 월별 데이터 추가 가능
-		};
+        
+     // 초기화 함수
+        function resetExpenses() {
+            for (let dateKey in expenses) {
+                delete expenses[dateKey]; // 모든 항목 삭제
+            }
+        }
+        
+        onload=function(){
+           changeMonth(0);
+        }
+        
+        function changeMonth(increment) {
+            currentDate.setMonth(currentDate.getMonth() + increment);
+            renderCalendar();
+//             updateStats();
 
-		// 월을 바꿔주는 함수
-		function changeMonth(increment) {
-			currentDate.setMonth(currentDate.getMonth() + increment);
-			renderCalendar();
-		}
+            document.getElementById("income").textContent = `0 원`;
+            document.getElementById("expense").textContent = `0 원`;
+            document.getElementById("taxi-expense").textContent = `0 원`;
+            document.getElementById("consumption-rate").textContent = `0 원`; 
+            
+            
+            
+            totalIncome = 0; // 총 수입 (커피)
+            totalExpense = 0; // 총 지출 (담배 & 택시)
+            totalTaxiExpense = 0; // 택시 지출
+            
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1;
+            
+            fetch(`/savemoneycsr?year=${year}&month=${month}`)
+            .then(response => {
+                  if (response.ok) {
+                        return response.json();  // JSON 형태로 응답 본문을 변환
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }      
+               }
+            )
+            .then(data => {
+               console.log("Expense saved:", data["expenseList"][0]["date"]);
+               console.log("Expense saved:", data["dto"]["amountTotal"]);
+               document.getElementById("income").innerHTML = data["dto"]["coffeeTotal"]+"원"; 
+               document.getElementById("expense").innerHTML = data["dto"]["cigaretteTotal"]+"원"; 
+               document.getElementById("taxi-expense").innerHTML = data["dto"]["taxiTotal"]+"원";
+               
+               
+               // totalAmount 값 업데이트
+               document.getElementById("consumption-rate").innerHTML = data["dto"]["amountTotal"] + " 원";
 
-		// 날짜 선택 시 호출될 함수
-		function selectDate(day) {
-			selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-			showPopup();
-		}
+               
+               let expenseList=data["expenseList"];
+               console.log(expenseList);
+               
+            // 데이터 변환 처리
+               resetExpenses();
+               expenseList.forEach(({ date, expenseType }) => {
+                 // 날짜가 없으면 새로운 배열 초기화
+                 if (!expenses[date]) {
+                   expenses[date] = [];
+                 }
 
-		// 팝업을 보여주는 함수
-		function showPopup() {
-			// 팝업을 보이고, 오버레이를 활성화
-			document.getElementById('popup').style.display = 'block';
-			document.getElementById('overlay').style.display = 'block';
-		}
+                 // 해당 날짜에 비용 유형 추가
+                 expenses[date].push(expenseType);
+               });
+            
+               renderCalendar();
+            
+            })
+            .catch(error => console.error("Error saving expense:", error));
+        }
 
-		// 팝업을 닫는 함수
-		function closePopup() {
-			document.getElementById('popup').style.display = 'none';
-			document.getElementById('overlay').style.display = 'none';
-		}
 
-		// 소비 항목을 추가하는 함수
-		function addExpense(expenseType) {
-			const dateKey = `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1 < 10 ? '0' + (selectedDate.getMonth() + 1) : selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
-			if (!expenses[dateKey]) {
-				expenses[dateKey] = {};
-			}
+        function selectDate(day) {
+            selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+            showPopup();
+        }
 
-			if (!expenses[dateKey][expenseType]) {
-				expenses[dateKey][expenseType] = true; // 선택한 소비 항목을 저장
-				console.log(`${dateKey}에 ${expenseType} 추가`);
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
 
-				// 달력 업데이트
-				renderCalendar();
-			}
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
 
-			closePopup(); // 팝업 닫기
-		}
+        function addExpense(expenseType) {
+            const dateKey = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
 
-		// 달력을 렌더링하는 함수
-		function renderCalendar() {
-			const month = currentDate.getMonth();
-			const year = currentDate.getFullYear();
+            if (!expenses[dateKey]) {
+                expenses[dateKey] = [];
+            }
 
-			// 월과 연도 표시
-			const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
-			const monthName = monthNames[month];
-			document.getElementById("calendar-month").textContent = `${monthName} ${year}`;
+            expenses[dateKey].push(expenseType);
 
-			// 통계 제목에 월 추가
-			document.getElementById("stats-month").textContent = `${year}년 ${monthName}`;
+//             if (expenseType === '커피') totalIncome += expensePrices['커피'];
+//             else if (expenseType === '담배') totalExpense += expensePrices['담배'];
+//             else if (expenseType === '택시') totalTaxiExpense += expensePrices['택시'];
+          if (expenseType === '커피') totalIncome = expensePrices['커피'];
+            else if (expenseType === '담배') totalExpense = expensePrices['담배'];
+            else if (expenseType === '택시') totalTaxiExpense = expensePrices['택시'];
 
-			// 월별 통계 업데이트
-			const statsKey = `${year}-${month + 1 < 10 ? '0' + (month + 1) : month + 1}`;
-			const stats = monthlyStatsData[statsKey] || {income: 0, expense: 0, consumptionRate: 0};
-			document.getElementById("income").textContent = `${stats.income} 원`;
-			document.getElementById("expense").textContent = `${stats.expense} 원`;
-			document.getElementById("consumption-rate").textContent = `${stats.consumptionRate}%`;
+            // 서버에 저장 요청
+            saveExpenseToServer(expenseType, dateKey);
 
-			// 달력의 첫 날 구하기
-			const firstDay = new Date(year, month, 1);
-			const lastDate = new Date(year, month + 1, 0); // 월의 마지막 날
+            updateStats();
+            renderCalendar();
+            closePopup();
+        }
 
-			// 첫 날의 요일
-			const startDay = firstDay.getDay();
 
-			// 마지막 날의 날짜
-			const totalDays = lastDate.getDate();
+        function saveExpenseToServer(expenseType, dateKey) {
+      
+           console.log("값:"+expenseType,dateKey);
+           let amount="";
+           let imageSrc = "";
+           if (expenseType === '커피') {amount = expensePrices['커피']; imageSrc = '/images/coffee.png';}
+            else if (expenseType === '담배'){ amount = expensePrices['담배']; imageSrc = '/images/cigarette.png';}
+            else if (expenseType === '택시'){ amount = expensePrices['택시']; imageSrc = '/images/taxi.png';}
+           
+           
+            
+            fetch('/api/expenses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            // json 데이터로 controller에 전달하면 @RequestBody 파라미터가 받음
+            body: JSON.stringify({
+                              "date": dateKey, "expenseType": expenseType , "amount":amount,
+                              "imageUrl":imageSrc,
+                           })
+            })
+            .then(response => console.log(response.status,response.data))
+            .then(data => console.log("Expense saved:", data))
+            .catch(error => console.error("Error saving expense:", error));
+        }
 
-			let calendarHTML = "";
-			let dayCount = 1;
+        function removeExpense(dateKey, index) {
+            if (confirm("삭제하시겠습니까?")) {
+                const removedExpense = expenses[dateKey].splice(index, 1);
+                if (expenses[dateKey].length === 0) delete expenses[dateKey];
 
-			// 첫 번째 주 만들기
-			for (let i = 0; i < 6; i++) {
-				calendarHTML += "<tr>";
+                const expenseType = removedExpense[0];
+                if (expenseType === '커피') totalIncome -= expensePrices['커피'];
+                else if (expenseType === '담배') totalExpense -= expensePrices['담배'];
+                else if (expenseType === '택시') totalTaxiExpense -= expensePrices['택시'];
 
-				// 각 주에 대해 날짜 추가
-				for (let j = 0; j < 7; j++) {
-					if (i === 0 && j < startDay) {
-						// 첫 주에서 시작일 전은 빈칸
-						calendarHTML += "<td></td>";
-					} else if (dayCount > totalDays) {
-						// 날짜가 마지막 날짜를 초과하면 종료
-						break;
-					} else {
-						const dateKey = `${year}-${month + 1 < 10 ? '0' + (month + 1) : month + 1}-${dayCount < 10 ? '0' + dayCount : dayCount}`;
-						let cellContent = dayCount;
+                updateStats();
+                renderCalendar();
+            }
+        }
 
-						// 날짜에 소비 항목이 있으면 표시
-						if (expenses[dateKey]) {
-							const expenseText = [];
-							if (expenses[dateKey].coffee) expenseText.push('커피');
-							if (expenses[dateKey].tobacco) expenseText.push('담배');
-							if (expenses[dateKey].alcohol) expenseText.push('술');
-							cellContent += `<br><small>${expenseText.join(', ')}</small>`;
-						}
+        function updateStats() {
+            const statsMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
+            document.getElementById("stats-month").textContent = statsMonth;
+            
+            // 현재 화면에 표시된 값들을 가져와서
+            let incomeVal = document.getElementById("income").textContent;
+            let expenseVal = document.getElementById("expense").textContent;
+            let taxiexpenseVal = document.getElementById("taxi-expense").textContent;
 
-						calendarHTML += `<td onclick="selectDate(${dayCount})">${cellContent}</td>`;
-						dayCount++;
-					}
-				}
+            // 각 항목에 대해 적절히 업데이트
+            document.getElementById("income").textContent =
+                parseInt(incomeVal.substring(0, incomeVal.length - 1)) + totalIncome + " 원";
+            document.getElementById("expense").textContent =
+                parseInt(expenseVal.substring(0, expenseVal.length - 1)) + totalExpense + " 원";
+            document.getElementById("taxi-expense").textContent =
+                parseInt(taxiexpenseVal.substring(0, taxiexpenseVal.length - 1)) + totalTaxiExpense + " 원";
 
-				calendarHTML += "</tr>";
+            // 총합 계산
+            const totalSum = totalIncome + totalExpense + totalTaxiExpense;
+            document.getElementById("consumption-rate").textContent = `${totalSum} 원`;
+        
+            totalIncome = 0; // 총 수입 (커피)
+            totalExpense = 0; // 총 지출 (담배 & 택시)
+            totalTaxiExpense = 0; // 택시 지출        
+        }
 
-				if (dayCount > totalDays) break; // 날짜가 끝났으면 종료
-			}
 
-			document.getElementById("calendar-body").innerHTML = calendarHTML;
-		}
+        function renderCalendar() {
+            const month = currentDate.getMonth();
+            const year = currentDate.getFullYear();
 
-		// 페이지 로드 시 달력 렌더링
-		renderCalendar();
-	</script>
+            const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+            document.getElementById("calendar-month").textContent = `${year}년 ${monthNames[month]}`;
+
+            const firstDay = new Date(year, month, 1);
+            const lastDate = new Date(year, month + 1, 0);
+            const startDay = firstDay.getDay();
+            const totalDays = lastDate.getDate();
+
+            let calendarHTML = "";
+            let dayCount = 1;
+            
+            
+
+            for (let i = 0; i < 6; i++) {
+                calendarHTML += "<tr>";
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < startDay) {
+                        calendarHTML += "<td></td>";
+                    } else if (dayCount > totalDays) {
+                        break;
+                    } else {
+                        const dateKey = `${year}-${(month + 1).toString().padStart(2, '0')}-${dayCount.toString().padStart(2, '0')}`;
+                        let cellContent = `<div>${dayCount}</div>`;
+
+                        if (expenses[dateKey]) {
+                            cellContent += `<ul class='expenses'>`;
+                            expenses[dateKey].forEach((item, index) => {
+                                let imageSrc = "";
+                                if (item === '커피') imageSrc = '/images/coffee.png';
+                                else if (item === '담배') imageSrc = '/images/cigarette.png';
+                                else if (item === '택시') imageSrc = '/images/taxi.png';
+
+                                cellContent += `<li onclick="removeExpense('${dateKey}', ${index})">
+                                                    <img src="${imageSrc}" alt="${item}">
+                                                </li>`;
+                            });
+                            cellContent += `</ul>`;
+                        }
+
+                        calendarHTML += `<td onclick="selectDate(${dayCount})">${cellContent}</td>`;
+                        dayCount++;
+                    }
+                }
+                calendarHTML += "</tr>";
+                if (dayCount > totalDays) break;
+            }
+
+            document.getElementById("calendar-body").innerHTML = calendarHTML;
+        }
+
+        renderCalendar();
+    </script>
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
 </body>
 
 </html>

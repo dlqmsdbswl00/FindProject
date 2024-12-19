@@ -40,7 +40,7 @@
    </insert>
    
    <select id="totalMoney" parameterType="int" resultType="int">
-      SELECT sum(money)
+      SELECT sum(돈)
       FROM useraccount
       WHERE USERSEQNO = #{userseqno}
    </select>
@@ -73,6 +73,32 @@
       ORDER BY REGDATE
    </select>
    
+   <insert id="insertExpense" parameterType="ExpenseDto">
+    INSERT INTO expense
+    VALUES (null,#{email},#{date, jdbcType=DATE},#{expenseType},#{amount}, #{imageUrl} )
+   </insert>
+
    
+   <select id="monthlyExpense" resultType="ExpenseMonDto" parameterType="Map">
+    SELECT 
+        SUM(CASE WHEN expense_type = '커피' THEN amount ELSE 0 END) AS coffeeTotal,
+        SUM(CASE WHEN expense_type = '담배' THEN amount ELSE 0 END) AS cigaretteTotal,
+        SUM(CASE WHEN expense_type = '택시' THEN amount ELSE 0 END) AS taxiTotal,
+        SUM(CASE WHEN expense_type IN ('커피', '담배', '택시') THEN amount ELSE 0 END) AS amountTotal
+    FROM expense
+    WHERE YEAR(date) = #{year}
+    AND MONTH(date) = #{month}
+   </select>
+
+   
+   
+
+   <select id="monthlyExpenseList" resultType="ExpenseDto" parameterType="Map">
+        SELECT DATE, expense_type AS expenseType
+      FROM expense
+      WHERE email = #{email}
+      AND YEAR(date) = #{year}
+       AND MONTH(date) = #{month}
+   </select>
 </mapper>
 
