@@ -247,7 +247,15 @@ public class UserController {
 			month = cal.get(Calendar.MONTH) + 1 + "";
 		}
 		ExpenseMonDto dto = userService.monExpense(year, month);
-		model.addAttribute("dto", dto);
+		System.out.println("DTO: " + dto);
+
+		// dto가 null이면 기본값 생성
+	    if (dto == null) {
+	        dto = new ExpenseMonDto();
+	    }
+		
+	    model.addAttribute("dto", dto);
+
 		return "savemoney"; // savemoney.html 템플릿으로 이동
 	}
 
