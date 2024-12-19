@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.board.command.UserUpdateCommand;
 import com.board.dtos.AccountDto;
 import com.board.dtos.CalDto;
+import com.board.dtos.ExpenseDto;
+import com.board.dtos.ExpenseMonDto;
 import com.board.dtos.UserDto;
 import com.board.mapper.UserMapper;
 
@@ -86,6 +88,25 @@ public class UserService {
    
    public List<Map<String, Object>> UpdateUseMoney(Map<String, String> map){
       return userMapper.UpdateUseMoney(map);
+   }
+   
+   public boolean saveExpense(ExpenseDto expense) {
+      return userMapper.insertExpense(expense);
+   }
+   
+   public ExpenseMonDto monExpense(String year, String month) {
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("year", year);
+      map.put("month", month);
+      return userMapper.monthlyExpense(map);
+   }
+   
+   public List<ExpenseDto> monthlyExpenseList(String year, String month,String email){
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("year", year);
+      map.put("month", month);
+      map.put("email", email);
+      return userMapper.monthlyExpenseList(map);
    }
    
    

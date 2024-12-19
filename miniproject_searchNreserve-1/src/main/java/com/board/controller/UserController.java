@@ -5,22 +5,30 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.board.command.UserUpdateCommand;
 import com.board.dtos.CalDto;
+import com.board.dtos.ExpenseDto;
+import com.board.dtos.ExpenseMonDto;
 import com.board.dtos.UserDto;
 import com.board.service.UserService;
 
@@ -168,6 +176,12 @@ public class UserController {
 		return "user/authresult";
 	}
 
+	// 마이페이지
+	@GetMapping("/user/mypage")
+	public String myPage() {
+		return "user/mypage"; // mypage.html 템플릿 반환
+	}
+
 	// 유저 정보 수정 페이지 이동
 	@GetMapping("/userInfo")
 	public String userInfoPage(Model model, HttpServletRequest request) {
@@ -225,7 +239,49 @@ public class UserController {
 	}
 
 	@GetMapping("/savemoney")
-	public String savemoney() {
+	public String savemoney(String year, String month, Model model) {
+
+		if (year == null || month == null) {
+			Calendar cal = Calendar.getInstance();
+			year = cal.get(Calendar.YEAR) + "";
+			month = cal.get(Calendar.MONTH) + 1 + "";
+		}
+		ExpenseMonDto dto = userService.monExpense(year, month);
+		model.addAttribute("dto", dto);
 		return "savemoney"; // savemoney.html 템플릿으로 이동
 	}
+
+	@GetMapping("/savemoneycsr")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> savemoneyCSR(String year, String month, HttpServletRequest request) {
+		System.out.println("year:" + year + "month:" + month);
+		HttpSession session = request.getSession();
+		UserDto uDto = (UserDto) session.getAttribute("ldto");
+
+		ExpenseMonDto dto = userService.monExpense(year, month);
+		List<ExpenseDto> list = userService.monthlyExpenseList(year, month, uDto.getEmail());
+
+		System.out.println(list.size());
+		System.out.println(dto);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("expenseList", list);
+		map.put("dto", dto);
+
+		return ResponseEntity.ok(map); // savemoney.html 템플릿으로 이동
+	}
+
+	// date: dateKey,
+	// expenseType: expenseType
+	@PostMapping("/api/expenses")
+	@ResponseBody
+	public ResponseEntity<String> saveExpenses(@RequestBody ExpenseDto expenses, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserDto uDto = (UserDto) session.getAttribute("ldto");
+		expenses.setEmail(uDto.getEmail());
+		System.out.println("지출 ㅋㅋㅋ" + expenses);
+		userService.saveExpense(expenses);
+		return ResponseEntity.ok("등록완료");// 성공을 의미하는 200코드 반환
+	}
+
 }

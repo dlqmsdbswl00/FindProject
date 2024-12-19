@@ -20,8 +20,9 @@
 .calendar-table th, .calendar-table td {
     text-align: left; /* 숫자를 왼쪽으로 정렬 */
     vertical-align: top; /* 숫자를 상단으로 정렬 */
-    padding: 25px; /* 셀의 여백을 늘려서 세로 크기 키우기 */
+    padding: 0px; /* 셀의 여백을 늘려서 세로 크기 키우기 */
     border: 2px solid #ccc;
+      width: 120px;
     height: 90px; /* 각 셀의 높이를 키워서 세로 크기 확장 */
     cursor: pointer; /* 클릭 가능하도록 커서 변경 */
 }
@@ -76,6 +77,9 @@
 .calendar-nav button:hover {
     background-color: white; /* 호버 시 버튼 배경색을 살짝 회색으로 변경 */
 }
+
+
+
 
 
 /* 통계 박스 스타일 */
