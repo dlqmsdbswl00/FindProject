@@ -67,13 +67,40 @@
 
 		// 예시 재정 데이터 (월별로 통계 정보 저장)
 		const monthlyStatsData = {
-			"2024-01": {income: 2500000, expense: 1800000, consumptionRate: 40},
-			"2024-02": {income: 2200000, expense: 1600000, consumptionRate: 30},
-			"2024-03": {income: 2400000, expense: 2000000, consumptionRate: 45},
-			"2024-04": {income: 2300000, expense: 1900000, consumptionRate: 35},
-
-			// 더 많은 월별 데이터 추가 가능
+			"2024-11": {income: 500000, expense: 122500, consumptionRate: 24.5},
+			"2024-12": {income: 500000, expense: 67500, consumptionRate: 13.5},
 		};
+
+		// 거래 내역 데이터 (예시)
+		// 거래 내역 데이터 (예시)
+		const transactionHistory = [
+			{'date': '2024-11-03', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-11-04', 'store': '메가커피 양평점', 'type': '출금', 'category': '커피', 'amount': 2000},
+			{'date': '2024-11-08', 'store': '한신포차', 'type': '출금', 'category': '식사', 'amount': 35000},
+			{'date': '2024-11-09', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-11-15', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-11-16', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-11-18', 'store': '취업지원센터', 'type': '입금', 'category': '취업지원금', 'amount': 500000},
+			{'date': '2024-11-20', 'store': '메가커피 양평점', 'type': '출금', 'category': '커피', 'amount': 2000},
+			{'date': '2024-11-21', 'store': '메가커피 양평점', 'type': '출금', 'category': '커피', 'amount': 2000},
+			{'date': '2024-11-23', 'store': '메가커피 양평점', 'type': '출금', 'category': '커피', 'amount': 2000},
+			{'date': '2024-11-25', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-11-26', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-11-27', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-11-28', 'store': '한솥도시락', 'type': '출금', 'category': '식사', 'amount': 8000},
+			{'date': '2024-11-29', 'store': '도미노피자', 'type': '출금', 'category': '배달의민족', 'amount': 25000},
+			{'date': '2024-11-30', 'store': '열정국밥', 'type': '출금', 'category': '배달의민족', 'amount': 15000},
+			{'date': '2024-12-01', 'store': '요아정', 'type': '출금', 'category': '배달의민족', 'amount': 18000},
+			{'date': '2024-12-03', 'store': '더쎈족발', 'type': '출금', 'category': '배달의민족', 'amount': 30000},
+			{'date': '2024-12-05', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-12-06', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-12-07', 'store': 'cu양평점', 'type': '출금', 'category': '담배', 'amount': 4500},
+			{'date': '2024-12-08', 'store': '한국장학센터', 'type': '입금', 'category': '근로장학금', 'amount': 500000},
+			{'date': '2024-12-11', 'store': '메가커피 양평점', 'type': '출금', 'category': '커피', 'amount': 2000},
+			{'date': '2024-12-13', 'store': '메가커피 양평점', 'type': '출금', 'category': '커피', 'amount': 2000},
+			{'date': '2024-12-15', 'store': '메가커피 양평점', 'type': '출금', 'category': '커피', 'amount': 2000},
+		];
+
 
 		// 월을 바꿔주는 함수
 		function changeMonth(increment) {
@@ -81,10 +108,24 @@
 			renderCalendar();
 		}
 
+		// 거래 내역을 날짜별로 그룹화하는 함수
+		function groupTransactionsByDate() {
+			const groupedTransactions = {};
+			transactionHistory.forEach(transaction => {
+				const date = transaction.date;
+				if (!groupedTransactions[date]) {
+					groupedTransactions[date] = [];
+				}
+				groupedTransactions[date].push(transaction);
+			});
+			return groupedTransactions;
+		}
+
 		// 달력을 렌더링하는 함수
 		function renderCalendar() {
 			const month = currentDate.getMonth();
 			const year = currentDate.getFullYear();
+			const groupedTransactions = groupTransactionsByDate();
 
 			// 월과 연도 표시
 			const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
@@ -129,7 +170,12 @@
 						// 날짜가 마지막 날짜를 초과하면 종료
 						break;
 					} else {
-						calendarHTML += `<td onclick="selectDate(${dayCount})">${dayCount}</td>`;
+						// 날짜 클릭 시 해당 거래 내역 보여주기
+						const dateString = `${year}-${month + 1 < 10 ? '0' + (month + 1) : month + 1}-${dayCount < 10 ? '0' + dayCount : dayCount}`;
+						const transactionsForDay = groupedTransactions[dateString] || [];
+						const transactionDetails = transactionsForDay.map(t => `${t.store} - ${t.category} - ${t.amount} 원`).join("<br>");
+
+						calendarHTML += `<td onclick="showTransactions('${dateString}')">${dayCount}<br><small>${transactionDetails}</small></td>`;
 						dayCount++;
 					}
 				}
@@ -142,9 +188,24 @@
 			document.getElementById("calendar-body").innerHTML = calendarHTML;
 		}
 
+		// 거래 내역을 보여주는 함수
+		function showTransactions(date) {
+			const transactionsForDay = groupTransactionsByDate()[date] || [];
+			let transactionList = `<h5>${date}의 거래 내역</h5>`;
+			if (transactionsForDay.length === 0) {
+				transactionList += "<p>거래 내역이 없습니다.</p>";
+			} else {
+				transactionsForDay.forEach(transaction => {
+					transactionList += `<p>${transaction.store} - ${transaction.category} - ${transaction.amount} 원</p>`;
+				});
+			}
+			alert(transactionList);
+		}
+
 		// 페이지 로드 시 달력 렌더링
 		renderCalendar();
 	</script>
+
 	<!-- 푸터 -->
 	<footer th:insert="fragments/footer :: footer"></footer>
 </body>

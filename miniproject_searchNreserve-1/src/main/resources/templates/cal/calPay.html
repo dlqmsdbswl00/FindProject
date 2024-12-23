@@ -1,172 +1,174 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-     layout:decorate="~{layouts/signuplayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/signuplayout}">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script type="text/javascript">
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script type="text/javascript">
 
-function updateRemainingBalance() {
-    var currentBalance = parseFloat($("#currentBalance").val());
-    var usageAmount = parseFloat($("#usage").val());
-    if (!isNaN(currentBalance) && !isNaN(usageAmount)) {
-        var remainingBalance = Math.floor(currentBalance - usageAmount);
-        $("#remainingBalance").val(remainingBalance);
-    }
-}
-
-
-onload = function myInfo() {
-	function updateRemainingBalance() {
-	    var currentBalance = parseFloat($("#currentBalance").val());
-	    var usageAmount = parseFloat($("#usage").val());
-	    if (!isNaN(currentBalance) && !isNaN(usageAmount)) {
-	        var remainingBalance = Math.floor(currentBalance - usageAmount);
-	        $("#remainingBalance").val(remainingBalance);
-	    }
-	}
-    $.ajax({
-        url: "/banking/getMyAccount",
-        method: "get",
-        dataType: "json",
-        success: function (data) {
-            var accountDropdown = $("#accountDropdown");
-            accountDropdown.empty();
-            $.each(data, function(index, account) {
-                var option = $("<option>");
-                option.val(account.money);
-                option.text(account.account_num_masked + ' [' + account.bank_name + ']');
-                accountDropdown.append(option);
-                $("#currentBalance").val(account.money);
-                $("#finusenum").val(account.fintech_use_num);
-            });
-            accountDropdown.change(function() {
-                var selectedValue = $(this).val();
-
-                $("#currentBalance").val(selectedValue);
-                $("#finusenum").val(accountDropdown.find(":selected").text().split('[')[0].trim());
-
-                updateRemainingBalance();
-            });
-            $("#moneyDiv").show();
-        }
-    });
-    
-    $("#usage").on("input", function() {
-        updateRemainingBalance();
-    });
-}
+		function updateRemainingBalance() {
+			var currentBalance = parseFloat($("#currentBalance").val());
+			var usageAmount = parseFloat($("#usage").val());
+			if (!isNaN(currentBalance) && !isNaN(usageAmount)) {
+				var remainingBalance = Math.floor(currentBalance - usageAmount);
+				$("#remainingBalance").val(remainingBalance);
+			}
+		}
 
 
+		onload = function myInfo() {
+			function updateRemainingBalance() {
+				var currentBalance = parseFloat($("#currentBalance").val());
+				var usageAmount = parseFloat($("#usage").val());
+				if (!isNaN(currentBalance) && !isNaN(usageAmount)) {
+					var remainingBalance = Math.floor(currentBalance - usageAmount);
+					$("#remainingBalance").val(remainingBalance);
+				}
+			}
+			$.ajax({
+				url: "/banking/getMyAccount",
+				method: "get",
+				dataType: "json",
+				success: function (data) {
+					var accountDropdown = $("#accountDropdown");
+					accountDropdown.empty();
+					$.each(data, function (index, account) {
+						var option = $("<option>");
+						option.val(account.money);
+						option.text(account.account_num_masked + ' [' + account.bank_name + ']');
+						accountDropdown.append(option);
+						$("#currentBalance").val(account.money);
+						$("#finusenum").val(account.fintech_use_num);
+					});
+					accountDropdown.change(function () {
+						var selectedValue = $(this).val();
 
-function payInfo() {
-    var selectedfinusenum = $("#finusenum").val();
-    var remainingBalance = $("#remainingBalance").val();
-    var usage = $("#usage").val();
+						$("#currentBalance").val(selectedValue);
+						$("#finusenum").val(accountDropdown.find(":selected").text().split('[')[0].trim());
 
-    if (parseFloat(remainingBalance) < 0) {
-        alert("잔액이 모자랍니다.");
-        return; 
-    }
+						updateRemainingBalance();
+					});
+					$("#moneyDiv").show();
+				}
+			});
 
-    if (parseFloat(usage) < 0) {
-        alert("결제금액을 확인해주세요.");
-        return; 
-    }
-
-    $.ajax({
-        url: "/cal/pay",
-        method: "get",
-        data: {"fintech_use_num": selectedfinusenum, "remaining_balance": remainingBalance},
-        dataType: "json",
-        success: function (isPaymentSuccessful) {
-            if (isPaymentSuccessful) {
-                alert("결제가 완료되었습니다.");
-
-                if (window.opener) {
-                    window.opener.updatePaymentButtonValue(usage);
-                }
-                window.close();
-            } else {
-                alert("결제에 실패했습니다.");
-            }
-        },
-        error: function () {
-            alert("서버 오류 또는 네트워크 오류로 결제에 실패했습니다.");
-        }
-    });
-}
+			$("#usage").on("input", function () {
+				updateRemainingBalance();
+			});
+		}
 
 
 
-    
-function updatePaymentSelect(selectedValue) {
-    $("#paymentDropdown").append(
-        '<option value="' + selectedValue + '">' + $("#accountDropdown option:selected").text() + '</option>'
-    );
-}
+		function payInfo() {
+			var selectedfinusenum = $("#finusenum").val();
+			var remainingBalance = $("#remainingBalance").val();
+			var usage = $("#usage").val();
 
-</script>
-<style type="text/css">
-    .select-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
+			if (parseFloat(remainingBalance) < 0) {
+				alert("잔액이 모자랍니다.");
+				return;
+			}
 
-    select {
-        margin-right: 10px;
-        padding: 8px; 
-        border: 1px solid #ccc; 
-        border-radius: 4px; 
-    }
+			if (parseFloat(usage) < 0) {
+				alert("결제금액을 확인해주세요.");
+				return;
+			}
 
-    button {
-        padding: 8px; 
-        border: 1px solid #007bff; 
-        border-radius: 4px; 
-        background-color: #007bff; 
-        color: #fff; 
-        cursor: pointer;
-    }
+			$.ajax({
+				url: "/cal/pay",
+				method: "get",
+				data: {"fintech_use_num": selectedfinusenum, "remaining_balance": remainingBalance},
+				dataType: "json",
+				success: function (isPaymentSuccessful) {
+					if (isPaymentSuccessful) {
+						alert("결제가 완료되었습니다.");
 
-    #moneyDiv {
-        display: none; 
-    }
+						if (window.opener) {
+							window.opener.updatePaymentButtonValue(usage);
+						}
+						window.close();
+					} else {
+						alert("결제에 실패했습니다.");
+					}
+				},
+				error: function () {
+					alert("서버 오류 또는 네트워크 오류로 결제에 실패했습니다.");
+				}
+			});
+		}
 
-    #usage,
-    #remainingBalance,
-    #currentBalance {
-        padding: 8px; 
-        border: 1px solid #ccc; 
-        border-radius: 4px; 
-        margin-right: 10px; 
-    }
-</style>
+
+
+
+		function updatePaymentSelect(selectedValue) {
+			$("#paymentDropdown").append(
+				'<option value="' + selectedValue + '">' + $("#accountDropdown option:selected").text() + '</option>'
+			);
+		}
+
+	</script>
+	<style type="text/css">
+		.select-container {
+			display: flex;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+
+		select {
+			margin-right: 10px;
+			padding: 8px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+		button {
+			padding: 8px;
+			border: 1px solid #007bff;
+			border-radius: 4px;
+			background-color: #007bff;
+			color: #fff;
+			cursor: pointer;
+		}
+
+		#moneyDiv {
+			display: none;
+		}
+
+		#usage,
+		#remainingBalance,
+		#currentBalance {
+			padding: 8px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			margin-right: 10px;
+		}
+	</style>
 </head>
+
 <body>
-<div layout:fragment="content">
-    <h1>간편결제</h1>
-    
-    <div class="select-container">
-        <select id="accountDropdown"></select>
-    </div>
+	<div layout:fragment="content">
+		<h1>간편결제</h1>
 
-    <div id="moneyDiv" class="select-container">
-        <p style="display: inline-block;">현재잔액</p>
-        <input id="currentBalance" readonly><br/>
-        <p style="display: inline-block;">사용금액</p>
-        <input id="usage" placeholder="먼저 사용금액을 입력해주세요"><br/>
-        <p style="display: inline-block;">남은잔액</p>
-        <input id="remainingBalance" readonly>
-        <input id="finusenum" readonly type="hidden">
-    </div>
+		<div class="select-container">
+			<select id="accountDropdown"></select>
+		</div>
 
-    <div class="select-container">
-        <button onclick="payInfo()">결제</button>
-    </div>
-</div>
+		<div id="moneyDiv" class="select-container">
+			<p style="display: inline-block;">현재잔액</p>
+			<input id="currentBalance" readonly><br />
+			<p style="display: inline-block;">사용금액</p>
+			<input id="usage" placeholder="먼저 사용금액을 입력해주세요"><br />
+			<p style="display: inline-block;">남은잔액</p>
+			<input id="remainingBalance" readonly>
+			<input id="finusenum" readonly type="hidden">
+		</div>
+
+		<div class="select-container">
+			<button onclick="payInfo()">결제</button>
+		</div>
+	</div>
 </body>
+
 </html>

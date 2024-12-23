@@ -72,9 +72,4 @@ public class UserUpdateCommand {
       this.phone = phone;
    }
 
-   
-   
-   
-   
-   
 }

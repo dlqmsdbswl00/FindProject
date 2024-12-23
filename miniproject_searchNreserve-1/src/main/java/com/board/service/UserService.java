@@ -91,22 +91,23 @@ public class UserService {
    }
    
    public boolean saveExpense(ExpenseDto expense) {
-      return userMapper.insertExpense(expense);
+	   return userMapper.insertExpense(expense);
    }
    
-   public ExpenseMonDto monExpense(String year, String month) {
-      Map<String, String> map = new HashMap<String, String>();
-      map.put("year", year);
-      map.put("month", month);
-      return userMapper.monthlyExpense(map);
+   public ExpenseMonDto monExpense(String year, String month,String email) {
+	   Map<String, String> map = new HashMap<String, String>();
+	   map.put("year", year);
+	   map.put("month", month);
+	   map.put("email", email);
+	   return userMapper.monthlyExpense(map);
    }
    
    public List<ExpenseDto> monthlyExpenseList(String year, String month,String email){
-      Map<String, String> map = new HashMap<String, String>();
-      map.put("year", year);
-      map.put("month", month);
-      map.put("email", email);
-      return userMapper.monthlyExpenseList(map);
+	   Map<String, String> map = new HashMap<String, String>();
+	   map.put("year", year);
+	   map.put("month", month);
+	   map.put("email", email);
+	   return userMapper.monthlyExpenseList(map);
    }
    
    
