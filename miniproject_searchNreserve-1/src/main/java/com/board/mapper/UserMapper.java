@@ -24,10 +24,4 @@ public interface UserMapper {
 
 	public List<CalDto> userReserve(String email);
 
-	public boolean insertExpense(ExpenseDto dto);
-
-	public ExpenseMonDto monthlyExpense(Map<String, String> map);
-
-	public List<ExpenseDto> monthlyExpenseList(Map<String, String> map);
-
 }

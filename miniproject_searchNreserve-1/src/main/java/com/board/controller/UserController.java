@@ -86,9 +86,9 @@ public class UserController {
 	}
 
 	// 비밀번호 변경 페이지 이동
-	@GetMapping("/changePassword")
+	@GetMapping("/updatePassword")
 	public String passwordChangePage() {
-		return "user/changePassword"; // 비밀번호 변경 페이지 반환
+		return "user/updatePassword"; // 비밀번호 변경 페이지 반환
 	}
 
 	// 비밀번호 변경 처리
@@ -100,7 +100,7 @@ public class UserController {
 		boolean isPasswordCorrect = userService.checkPassword(dto.getEmail(), oldPassword);
 		if (!isPasswordCorrect) {
 			model.addAttribute("errorMessage", "현재 비밀번호가 맞지 않습니다.");
-			return "user/changePassword"; // 비밀번호 오류 시 다시 변경 페이지로
+			return "user/updatePassword"; // 비밀번호 오류 시 다시 변경 페이지로
 		}
 
 		// 비밀번호 변경
