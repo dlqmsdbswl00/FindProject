@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class ExpenseDto {
 
-   private String email;
+	private String email;
     private LocalDate date;     // 소비 날짜
     private String expenseType; // 소비 항목 (커피, 담배, 택시 등)
     private int amount;         // 소비 금액
@@ -42,21 +42,21 @@ public class ExpenseDto {
         this.imageUrl = imageUrl;
     }
 
-   public String getEmail() {
-      return email;
-   }
+	public String getEmail() {
+		return email;
+	}
 
-   public void setEmail(String email) {
-      this.email = email;
-   }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-   @Override
-   public String toString() {
-      return "ExpenseDto [email=" + email + ", date=" + date + ", expenseType=" + expenseType + ", amount=" + amount
-            + ", imageUrl=" + imageUrl + "]";
-   }
+	@Override
+	public String toString() {
+		return "ExpenseDto [email=" + email + ", date=" + date + ", expenseType=" + expenseType + ", amount=" + amount
+				+ ", imageUrl=" + imageUrl + "]";
+	}
 
-   
+	
     
     
 }

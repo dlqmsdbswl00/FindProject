@@ -280,20 +280,25 @@
             document.getElementById("stats-month").textContent = statsMonth;
             
             // 현재 화면에 표시된 값들을 가져와서
-            let incomeVal = document.getElementById("income").textContent;
-            let expenseVal = document.getElementById("expense").textContent;
-            let taxiexpenseVal = document.getElementById("taxi-expense").textContent;
+            let incomeVal = document.getElementById("income");
+            let expenseVal = document.getElementById("expense");
+            let taxiexpenseVal = document.getElementById("taxi-expense");
 
             // 각 항목에 대해 적절히 업데이트
-            document.getElementById("income").textContent =
-                parseInt(incomeVal.substring(0, incomeVal.length - 1)) + totalIncome + " 원";
-            document.getElementById("expense").textContent =
-                parseInt(expenseVal.substring(0, expenseVal.length - 1)) + totalExpense + " 원";
-            document.getElementById("taxi-expense").textContent =
-                parseInt(taxiexpenseVal.substring(0, taxiexpenseVal.length - 1)) + totalTaxiExpense + " 원";
+            incomeVal.textContent =
+                parseInt(incomeVal.textContent.substring(0, incomeVal.textContent.length - 1)) + totalIncome + " 원";
+            expenseVal.textContent =
+                parseInt(expenseVal.textContent.substring(0, expenseVal.textContent.length - 1)) + totalExpense + " 원";
+            taxiexpenseVal.textContent =
+                parseInt(taxiexpenseVal.textContent.substring(0, taxiexpenseVal.textContent.length - 1)) + totalTaxiExpense + " 원";
 
             // 총합 계산
-            const totalSum = totalIncome + totalExpense + totalTaxiExpense;
+//             const totalSum = totalIncome + totalExpense + totalTaxiExpense;
+           
+            const totalSum =parseInt(incomeVal.textContent.substring(0, incomeVal.textContent.length - 1))
+				           +parseInt(expenseVal.textContent.substring(0, expenseVal.textContent.length - 1))
+				           +parseInt(taxiexpenseVal.textContent.substring(0, taxiexpenseVal.textContent.length - 1));
+            
             document.getElementById("consumption-rate").textContent = `${totalSum} 원`;
         
             totalIncome = 0; // 총 수입 (커피)

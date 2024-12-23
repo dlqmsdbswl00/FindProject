@@ -21,9 +21,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.board.command.UserUpdateCommand;
 import com.board.dtos.CalDto;
@@ -34,9 +31,10 @@ import com.board.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-//@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
@@ -174,6 +172,7 @@ public class UserController {
 		}
 
 		return "user/authresult";
+
 	}
 
 	// 마이페이지
@@ -239,14 +238,16 @@ public class UserController {
 	}
 
 	@GetMapping("/savemoney")
-	public String savemoney(String year, String month, Model model) {
+	public String savemoney(String year, String month, Model model, HttpServletRequest request) {
 
 		if (year == null || month == null) {
 			Calendar cal = Calendar.getInstance();
 			year = cal.get(Calendar.YEAR) + "";
 			month = cal.get(Calendar.MONTH) + 1 + "";
 		}
-		ExpenseMonDto dto = userService.monExpense(year, month);
+		HttpSession session = request.getSession();
+		UserDto uDto = (UserDto) session.getAttribute("ldto");
+		ExpenseMonDto dto = userService.monExpense(year, month, uDto.getEmail());
 		model.addAttribute("dto", dto);
 		return "savemoney"; // savemoney.html 템플릿으로 이동
 	}
@@ -258,7 +259,7 @@ public class UserController {
 		HttpSession session = request.getSession();
 		UserDto uDto = (UserDto) session.getAttribute("ldto");
 
-		ExpenseMonDto dto = userService.monExpense(year, month);
+		ExpenseMonDto dto = userService.monExpense(year, month, uDto.getEmail());
 		List<ExpenseDto> list = userService.monthlyExpenseList(year, month, uDto.getEmail());
 
 		System.out.println(list.size());
@@ -271,8 +272,8 @@ public class UserController {
 		return ResponseEntity.ok(map); // savemoney.html 템플릿으로 이동
 	}
 
-	// date: dateKey,
-	// expenseType: expenseType
+//   date: dateKey,
+//   expenseType: expenseType
 	@PostMapping("/api/expenses")
 	@ResponseBody
 	public ResponseEntity<String> saveExpenses(@RequestBody ExpenseDto expenses, HttpServletRequest request) {
