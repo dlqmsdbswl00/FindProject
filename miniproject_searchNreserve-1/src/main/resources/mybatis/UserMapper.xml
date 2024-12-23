@@ -3,103 +3,71 @@
 
 <mapper namespace="com.board.mapper.UserMapper">
 
-   <insert id="addUser" parameterType="UserDto">
-      INSERT INTO user
-      VALUES(#{email}, #{name}, #{password}, #{useraccesstoken}
-         ,#{userrefreshtoken}, #{userseqno}, #{address}, #{birth}, #{phone})
-   </insert>
-
-   <select id="loginUser" parameterType="UserDto" resultType="UserDto">
-      SELECT EMAIL, NAME, PASSWORD, USERACCESSTOKEN, USERREFRESHTOKEN,
-            USERSEQNO, ADDRESS, BIRTH, PHONE
-      FROM user
-      WHERE EMAIL=#{email} AND PASSWORD=#{password}
-   </select>
-   
-   <select id="userInfo" parameterType="String" resultType="UserDto">
-      SELECT EMAIL, NAME, ADDRESS, BIRTH, PHONE
-      FROM USER
-      WHERE EMAIL = #{email}
-   </select>
-   
-   <update id="updateUser" parameterType="UserDto">
-      UPDATE USER
-      SET EMAIL = #{email},  NAME = #{name}, ADDRESS = #{address}, BIRTH = #{birth}, PHONE = #{phone}
-      WHERE EMAIL = #{email}
-   </update>
-   
-   <select id="userReserve" parameterType="String" resultType="CalDto">
-         SELECT YADMNM, MDATE, usemoney
-         FROM RESERVEBOARD
-         WHERE EMAIL = #{email}
-   </select>
-   
-   <insert id="addAccount" parameterType="Map">
-        INSERT INTO USERACCOUNT
-        VALUES(#{fintech_use_num}, #{money},#{bank_name},#{userseqno}, #{account_num_masked})
-   </insert>
-   
-   <select id="totalMoney" parameterType="int" resultType="int">
-      SELECT sum(money)
-      FROM useraccount
-      WHERE USERSEQNO = #{userseqno}
-   </select>
-   
-   
-   
-   <select id="getMyAccount" parameterType="Integer" resultType="AccountDto">
-         SELECT FINTECH_USE_NUM, MONEY, BANK_NAME, USERSEQNO, ACCOUNT_NUM_MASKED
-         FROM USERACCOUNT
-         WHERE USERSEQNO = #{userseqno}
-   </select>
-   
-   <select id="CheckAccount" parameterType="String" resultType="String">
-      SELECT FINTECH_USE_NUM FROM USERACCOUNT WHERE FINTECH_USE_NUM = #{fintech_use_num}
-   </select>
-   
-   <select id="dayUseMoney" parameterType="String" resultType="Map">
-      SELECT REGDATE, SUM(USEMONEY) AS TOTALUSEMONEY
-      FROM RESERVEBOARD
-      WHERE EMAIL = #{email}
-      GROUP BY REGDATE
-      ORDER BY REGDATE
-   </select>
-   
-   <select id="UpdateUseMoney" parameterType="Map" resultType="Map">
-      SELECT REGDATE, SUM(USEMONEY) AS TOTALUSEMONEY
-      FROM RESERVEBOARD
-      WHERE EMAIL = #{email} AND REGDATE BETWEEN #{startDate} AND #{endDate}
-      GROUP BY REGDATE
-      ORDER BY REGDATE
-   </select>
-   
-   <insert id="insertExpense" parameterType="ExpenseDto">
-    INSERT INTO expense
-    VALUES (null,#{email},#{date, jdbcType=DATE},#{expenseType},#{amount}, #{imageUrl} )
+	<insert id="addUser" parameterType="UserDto">
+		INSERT INTO user
+		VALUES(#{email}, #{name}, #{password}, #{useraccesstoken}
+		,#{userrefreshtoken}, #{userseqno}, #{address}, #{birth}, #{phone})
 	</insert>
 
-	
-	<select id="monthlyExpense" resultType="ExpenseMonDto" parameterType="Map">
-    SELECT 
-        SUM(CASE WHEN expense_type = '커피' THEN amount ELSE 0 END) AS coffeeTotal,
-        SUM(CASE WHEN expense_type = '담배' THEN amount ELSE 0 END) AS cigaretteTotal,
-        SUM(CASE WHEN expense_type = '택시' THEN amount ELSE 0 END) AS taxiTotal,
-        SUM(CASE WHEN expense_type IN ('커피', '담배', '택시') THEN amount ELSE 0 END) AS amountTotal
-    FROM expense
-    WHERE YEAR(date) = #{year}
-    AND MONTH(date) = #{month}
-    AND email = #{email}
+	<select id="loginUser" parameterType="UserDto"
+		resultType="UserDto">
+		SELECT EMAIL, NAME, PASSWORD, USERACCESSTOKEN,
+		USERREFRESHTOKEN,
+		USERSEQNO, ADDRESS, BIRTH, PHONE
+		FROM user
+		WHERE
+		EMAIL=#{email} AND PASSWORD=#{password}
 	</select>
 
-	
-	
+	<select id="userInfo" parameterType="String"
+		resultType="UserDto">
+		SELECT EMAIL, NAME, ADDRESS, BIRTH, PHONE
+		FROM USER
+		WHERE
+		EMAIL = #{email}
+	</select>
 
-   <select id="monthlyExpenseList" resultType="ExpenseDto" parameterType="Map">
-	  	SELECT DATE, expense_type AS expenseType
-		FROM expense
+	<update id="updateUser" parameterType="UserDto">
+		UPDATE USER
+		SET EMAIL =
+		#{email}, NAME = #{name}, ADDRESS = #{address}, BIRTH =
+		#{birth}, PHONE
+		= #{phone}
+		WHERE EMAIL = #{email}
+	</update>
+
+	<select id="userReserve" parameterType="String"
+		resultType="CalDto">
+		SELECT YADMNM, MDATE, usemoney
+		FROM RESERVEBOARD
+		WHERE EMAIL
+		= #{email}
+	</select>
+
+
+	<!-- 이메일로 사용자 조회 -->
+	<select id="getUserByEmail" resultType="UserDto">
+		SELECT * FROM users WHERE email = #{email}
+	</select>
+
+	<!-- 비밀번호 업데이트 -->
+	<update id="updatePassword">
+		UPDATE users
+		SET password = #{newPassword}
 		WHERE email = #{email}
-		AND YEAR(date) = #{year}
-	    AND MONTH(date) = #{month}
-	</select>
+	</update>
+
+<!-- 회원정보 업데이트 -->
+	<update id="updateUser">
+		UPDATE users
+		SET name = #{name}, password = #{password}
+		WHERE email = #{email}
+	</update>
+
+	<!-- 사용자 삭제 -->
+	<delete id="deleteUser">
+		DELETE FROM users WHERE email = #{email}
+	</delete>
+
 </mapper>
 

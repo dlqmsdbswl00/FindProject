@@ -40,47 +40,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	// 루트 URL 접근 시 로그인 화면으로 이동
-	@GetMapping("/")
-	public String loginPage(HttpSession session) {
-		UserDto ldto = (UserDto) session.getAttribute("ldto");
-		if (ldto != null) {
-			// 이미 로그인된 사용자라면 메인 페이지로 리다이렉트
-			return "redirect:/main";
-		}
-		return "login"; // 로그인 화면 반환
-	}
-
-	// 로그인 처리
-	@GetMapping("/user/login")
-	public String loginPage() {
-		return "login"; // 로그인 페이지 반환
-	}
-
-	@PostMapping("/user/login")
-	public String login(UserDto dto, HttpServletRequest request, Model model) {
-		UserDto ldto = userService.loginUser(dto);
-
-		if (ldto == null) {
-			model.addAttribute("errorMessage", "이메일 또는 비밀번호가 올바르지 않습니다.");
-			return "login"; // 로그인 실패 시 로그인 화면으로 이동
-		}
-
-		HttpSession session = request.getSession();
-		session.setAttribute("ldto", ldto);
-		session.setMaxInactiveInterval(60 * 10); // 세션 유지 시간 10분
-
-		return "redirect:/main"; // 로그인 성공 시 메인 페이지로 이동
-	}
-
-	// 로그아웃 처리
-	@GetMapping("/logout")
-	public String logout(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		session.invalidate(); // 세션 초기화
-		return "redirect:/"; // 로그아웃 후 로그인 화면으로 이동
-	}
-
 	// 메인 페이지
 	@GetMapping("/main")
 	public String mainPage(HttpSession session, Model model) {
@@ -100,80 +59,6 @@ public class UserController {
 		return "main"; // 메인 화면 반환
 	}
 
-	// 회원가입 화면 이동
-	@GetMapping("/signup")
-	public String signUp() {
-		return "user/signup"; // 회원가입 화면 반환
-	}
-
-	// 회원가입 처리
-	@PostMapping("/addUser")
-	public String addUser(UserDto dto) {
-		System.out.println(dto);
-		boolean isS = userService.addUser(dto);
-		if (isS) {
-			System.out.println("회원가입 성공");
-			return "redirect:/"; // 회원가입 성공 후 로그인 화면으로 이동
-		}
-		System.out.println("회원가입 실패");
-		return "error"; // 회원가입 실패 시 에러 페이지
-	}
-
-	// 사용자 인증 후 토큰 발급 처리
-	@GetMapping("/authresult")
-	public String authResult(String code, Model model) throws IOException, ParseException {
-		HttpURLConnection conn;
-		JSONObject result;
-
-		// 인증 요청 URL
-		URL url = new URL("https://testapi.openbanking.or.kr/oauth/2.0/token?" + "code=" + code
-				+ "&client_id=4987e938-f84b-4e23-b0a2-3b15b00f4ffd"
-				+ "&client_secret=3ff7570f-fdfb-4f9e-8f5a-7b549bf2adec"
-				+ "&redirect_uri=http://localhost:8087/authresult" + "&grant_type=authorization_code");
-
-		conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		conn.setDoOutput(true);
-
-		// 응답 코드 확인
-		int responseCode = conn.getResponseCode();
-		System.out.println("응답 코드: " + responseCode); // 응답 코드 출력
-
-		// 정상 응답이 아닐 경우 에러 응답 확인
-		BufferedReader br;
-		if (responseCode != 200) {
-			br = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
-			StringBuilder errorResponse = new StringBuilder();
-			String errorLine;
-			while ((errorLine = br.readLine()) != null) {
-				errorResponse.append(errorLine.trim());
-			}
-			System.out.println("에러 응답 내용: " + errorResponse.toString()); // 에러 응답 출력
-
-			// 에러 응답 JSON 파싱 후 코드와 메시지 출력
-			JSONObject errorResult = (JSONObject) new JSONParser().parse(errorResponse.toString());
-			System.out.println("에러 코드: " + errorResult.get("rsp_code"));
-			System.out.println("에러 메시지: " + errorResult.get("rsp_message"));
-		} else {
-			// 정상 응답 처리
-			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-			StringBuilder response = new StringBuilder();
-			String responseLine;
-			while ((responseLine = br.readLine()) != null) {
-				response.append(responseLine.trim());
-			}
-			System.out.println("응답 내용: " + response.toString()); // 성공 응답 출력
-
-			result = (JSONObject) new JSONParser().parse(response.toString());
-			model.addAttribute("access_token", result.get("access_token").toString());
-			model.addAttribute("refresh_token", result.get("refresh_token").toString());
-			model.addAttribute("user_seq_no", result.get("user_seq_no").toString());
-		}
-
-		return "user/authresult";
-
-	}
 
 	// 마이페이지
 	@GetMapping("/user/mypage")
@@ -186,7 +71,7 @@ public class UserController {
 	public String userInfoPage(Model model, HttpServletRequest request) {
 		UserDto dto = userService.userInfo(request);
 		model.addAttribute("dto", dto);
-		return "user/userInfo";
+		return "user/userInfo"; // userInfo.html 템플릿 반환
 	}
 
 	// 유저 정보 수정 처리
@@ -196,93 +81,54 @@ public class UserController {
 			System.out.println("수정 내용이 잘못되었습니다.");
 			return "user/userInfo";
 		}
-		userService.updateUser(userUpdateCommand);
-		return "redirect:/userInfo";
+		userService.updateUser(userUpdateCommand); // DB 업데이트
+		return "redirect:/userInfo"; // 수정 후 다시 사용자 정보 페이지로 이동
 	}
 
-	// 기타 기능
-	@GetMapping("/usermain")
-	public String userMain(HttpServletRequest request, Model model) {
+	// 비밀번호 변경 페이지 이동
+	@GetMapping("/changePassword")
+	public String passwordChangePage() {
+		return "user/changePassword"; // 비밀번호 변경 페이지 반환
+	}
+
+	// 비밀번호 변경 처리
+	@PostMapping("/updatePassword")
+	public String updatePassword(String oldPassword, String newPassword, HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
-		String email = ((UserDto) session.getAttribute("ldto")).getEmail();
+		UserDto dto = (UserDto) session.getAttribute("ldto");
 
-		List<CalDto> list = userService.userReserve(email);
-		model.addAttribute("list", list);
-
-		return "user/usermain";
-	}
-
-	@GetMapping("/useraccount")
-	public String userAccount() {
-		return "user/useraccount";
-	}
-
-	@GetMapping("/userUseMoney")
-	public String userUseMoney() {
-		return "user/userUseMoney";
-	}
-
-	@GetMapping("/account")
-	public String account() {
-		return "account"; // account.html 템플릿으로 이동
-	}
-
-	@GetMapping("/calmoney")
-	public String calmoney() {
-		return "calmoney"; // calmoney.html 템플릿으로 이동
-	}
-
-	@GetMapping("/analysis")
-	public String analysis() {
-		return "analysis"; // analysis.html 템플릿으로 이동
-	}
-
-	@GetMapping("/savemoney")
-	public String savemoney(String year, String month, Model model, HttpServletRequest request) {
-
-		if (year == null || month == null) {
-			Calendar cal = Calendar.getInstance();
-			year = cal.get(Calendar.YEAR) + "";
-			month = cal.get(Calendar.MONTH) + 1 + "";
+		boolean isPasswordCorrect = userService.checkPassword(dto.getEmail(), oldPassword);
+		if (!isPasswordCorrect) {
+			model.addAttribute("errorMessage", "현재 비밀번호가 맞지 않습니다.");
+			return "user/changePassword"; // 비밀번호 오류 시 다시 변경 페이지로
 		}
-		HttpSession session = request.getSession();
-		UserDto uDto = (UserDto) session.getAttribute("ldto");
-		ExpenseMonDto dto = userService.monExpense(year, month, uDto.getEmail());
-		model.addAttribute("dto", dto);
-		return "savemoney"; // savemoney.html 템플릿으로 이동
+
+		// 비밀번호 변경
+		userService.updatePassword(dto.getEmail(), newPassword);
+		return "redirect:/userInfo"; // 비밀번호 변경 후 사용자 정보 페이지로 이동
 	}
 
-	@GetMapping("/savemoneycsr")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> savemoneyCSR(String year, String month, HttpServletRequest request) {
-		System.out.println("year:" + year + "month:" + month);
+	// 회원 탈퇴 처리
+	@GetMapping("/deleteAccount")
+	public String deleteAccount(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		UserDto uDto = (UserDto) session.getAttribute("ldto");
+		UserDto dto = (UserDto) session.getAttribute("ldto");
 
-		ExpenseMonDto dto = userService.monExpense(year, month, uDto.getEmail());
-		List<ExpenseDto> list = userService.monthlyExpenseList(year, month, uDto.getEmail());
-
-		System.out.println(list.size());
-		System.out.println(dto);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("expenseList", list);
-		map.put("dto", dto);
-
-		return ResponseEntity.ok(map); // savemoney.html 템플릿으로 이동
+		userService.deleteAccount(dto.getEmail()); // 계정 삭제
+		session.invalidate(); // 세션 무효화
+		return "redirect:/"; // 탈퇴 후 로그인 화면으로 이동
 	}
 
-//   date: dateKey,
-//   expenseType: expenseType
-	@PostMapping("/api/expenses")
-	@ResponseBody
-	public ResponseEntity<String> saveExpenses(@RequestBody ExpenseDto expenses, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserDto uDto = (UserDto) session.getAttribute("ldto");
-		expenses.setEmail(uDto.getEmail());
-		System.out.println("지출 ㅋㅋㅋ" + expenses);
-		userService.saveExpense(expenses);
-		return ResponseEntity.ok("등록완료");// 성공을 의미하는 200코드 반환
-	}
+//	@GetMapping("/useraccount")
+//	public String userAccount() {
+//		return "user/useraccount";
+//	}
+//
+//	@GetMapping("/userUseMoney")
+//	public String userUseMoney() {
+//		return "user/userUseMoney";
+//	}
+
+
 
 }
