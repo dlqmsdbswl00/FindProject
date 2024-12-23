@@ -44,8 +44,8 @@ body {
 /* 전체 컨테이너 */
 body {
   display: flex;
-  flex-direction: column; /* 세로 방향으로 나열 */
-  min-height: 100vh; /* 화면 크기에 맞춰 전체를 채운다 */
+  flex-direction: column; /* 세로 방향으로 나열 */height: calc(100vh - 100px);
+	/* 헤더와 푸터 제외 높이 */
 }
 
 /* 콘텐츠 영역 */

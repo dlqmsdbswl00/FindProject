@@ -2,105 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Fin.D</title>
+	<title>Fin.D 계좌현황</title>
 	<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css">
-	<link rel="stylesheet" th:href="@{/css/account.css}">
+	
 	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/global.css}">
+	<link rel="stylesheet" th:href="@{/css/account.css}">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-	<style>
-		/* 전체 레이아웃 */
-		body {
-			font-family: Arial, sans-serif;
-			margin: 0;
-			padding: 0;
-			display: flex;
-			flex-direction: column;
-			height: 100vh;
-		}
-
-		main {
-			display: flex;
-			flex: 1;
-			height: calc(100vh - 100px);
-			/* 헤더와 푸터 제외 높이 */
-		}
-
-		/* 왼쪽 영역 */
-		.left-side {
-			flex: 1;
-			padding: 20px;
-			box-sizing: border-box;
-			background-color: #f9f9f9;
-			border-right: 1px solid #ddd;
-			overflow-y: auto;
-		}
-
-		/* 오른쪽 영역 */
-		.right-side {
-			flex: 1;
-			padding: 20px;
-			box-sizing: border-box;
-			background-color: #ffffff;
-			overflow-y: auto;
-		}
-
-		/* 반응형 디자인 */
-		@media (max-width: 768px) {
-			main {
-				flex-direction: column;
-			}
-
-			.left-side {
-				border-right: none;
-				border-bottom: 1px solid #ddd;
-			}
-		}
-
-		/* 유저 프로필 */
-		.user-info {
-			display: flex;
-			align-items: center;
-			gap: 15px;
-			margin-bottom: 20px;
-		}
-
-		.profile-pic {
-			width: 50px;
-			height: 50px;
-			border-radius: 50%;
-			object-fit: cover;
-		}
-
-		.features {
-			margin-top: 20px;
-		}
-
-		#list .box {
-			border: 1px solid #ddd;
-			padding: 10px;
-			margin-bottom: 10px;
-			background: #fff;
-			border-radius: 8px;
-		}
-
-		.balance_amt,
-		.transaction_list {
-			margin-top: 10px;
-			color: #333;
-		}
-
-		.transaction_list ul {
-			list-style: none;
-			padding: 0;
-		}
-
-		.transaction_list li {
-			margin-bottom: 5px;
-			padding: 5px;
-			border-bottom: 1px dashed #ccc;
-		}
-	</style>
 	<script type="text/javascript">
 		function myInfo() {
 			$(".alistview").show();
