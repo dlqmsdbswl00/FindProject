@@ -9,97 +9,6 @@
 	<link rel="stylesheet" th:href="@{/css/global.css}">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 	<style>
-		/* 전체 레이아웃 */
-		body {
-			font-family: Arial, sans-serif;
-			margin: 0;
-			padding: 0;
-			display: flex;
-			flex-direction: column;
-			height: 100vh;
-		}
-
-		main {
-			display: flex;
-			flex: 1;
-			height: calc(100vh - 100px);
-			/* 헤더와 푸터 제외 높이 */
-		}
-
-		/* 왼쪽 영역 */
-		.left-side {
-			flex: 1;
-			padding: 20px;
-			box-sizing: border-box;
-			background-color: #f9f9f9;
-			border-right: 1px solid #ddd;
-			overflow-y: auto;
-		}
-
-		/* 오른쪽 영역 */
-		.right-side {
-			flex: 1;
-			padding: 20px;
-			box-sizing: border-box;
-			background-color: #ffffff;
-			overflow-y: auto;
-		}
-
-		/* 반응형 디자인 */
-		@media (max-width: 768px) {
-			main {
-				flex-direction: column;
-			}
-
-			.left-side {
-				border-right: none;
-				border-bottom: 1px solid #ddd;
-			}
-		}
-
-		/* 유저 프로필 */
-		.user-info {
-			display: flex;
-			align-items: center;
-			gap: 15px;
-			margin-bottom: 20px;
-		}
-
-		.profile-pic {
-			width: 50px;
-			height: 50px;
-			border-radius: 50%;
-			object-fit: cover;
-		}
-
-		.features {
-			margin-top: 20px;
-		}
-
-		#list .box {
-			border: 1px solid #ddd;
-			padding: 10px;
-			margin-bottom: 10px;
-			background: #fff;
-			border-radius: 8px;
-		}
-
-		.balance_amt,
-		.transaction_list {
-			margin-top: 10px;
-			color: #333;
-		}
-
-		.transaction_list ul {
-			list-style: none;
-			padding: 0;
-		}
-
-		.transaction_list li {
-			margin-bottom: 5px;
-			padding: 5px;
-			border-bottom: 1px dashed #ccc;
-		}
 	</style>
 	<script type="text/javascript">
 		function myInfo() {
@@ -139,7 +48,7 @@
 					var box = $(btnEle).parents(".box").eq(0);
 					box.find(".balance_amt").html(
 						"<p>잔액:" + data.balance_amt + "</p>"
-						+ "<p><button onclick='transactionList(\"" + fintech_use_num + "\",this)'>거래내역조회</button></p>"
+						+ "<p><button onclick='transactionList(\"" + fintech_use_num + "\",this)' class='button'>거래내역조회</button></p>"
 					);
 				},
 				error: function () {
@@ -179,10 +88,10 @@
 	<main>
 		<!-- 왼쪽 영역 -->
 		<section class="left-side">
-			<div class="user-info">
-				<img src="/images/default-profile.jpg" alt="프로필" class="profile-pic">
-				<h1 th:text="${userName}"></h1>
-			</div>
+<!--			<div class="user-info">-->
+<!--				<img src="/images/default-profile.jpg" alt="프로필" class="profile-pic">-->
+<!--				<h1 th:text="${userName}"></h1>-->
+<!--			</div>-->
 			<div class="features">
 				<div class="feature">
 					<div class="subtitle">
