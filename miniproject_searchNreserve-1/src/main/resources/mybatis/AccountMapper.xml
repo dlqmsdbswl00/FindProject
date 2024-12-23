@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.mapper.AccountMapper">
+
+	<insert id="addAccount" parameterType="Map">
+		INSERT INTO USERACCOUNT
+		VALUES(#{fintech_use_num}, #{money},#{bank_name},#{userseqno}, #{account_num_masked})
+	</insert>
+
+	<select id="totalMoney" parameterType="int" resultType="int">
+		SELECT sum(money)
+		FROM useraccount
+		WHERE USERSEQNO = #{userseqno}
+	</select>
+
+
+
+	<select id="getMyAccount" parameterType="Integer"
+		resultType="AccountDto">
+		SELECT FINTECH_USE_NUM, MONEY, BANK_NAME, USERSEQNO, ACCOUNT_NUM_MASKED
+		FROM USERACCOUNT
+		WHERE USERSEQNO = #{userseqno}
+	</select>
+
+	<select id="CheckAccount" parameterType="String"
+		resultType="String">
+		SELECT FINTECH_USE_NUM FROM USERACCOUNT WHERE FINTECH_USE_NUM =
+		#{fintech_use_num}
+	</select>
+
+	<select id="dayUseMoney" parameterType="String" resultType="Map">
+		SELECT REGDATE, SUM(USEMONEY) AS TOTALUSEMONEY
+		FROM RESERVEBOARD
+		WHERE EMAIL = #{email}
+		GROUP BY REGDATE
+		ORDER BY REGDATE
+	</select>
+
+	<select id="UpdateUseMoney" parameterType="Map" resultType="Map">
+		SELECT REGDATE, SUM(USEMONEY) AS TOTALUSEMONEY
+		FROM RESERVEBOARD
+		WHERE EMAIL = #{email} AND REGDATE BETWEEN #{startDate} AND #{endDate}
+		GROUP BY REGDATE
+		ORDER BY REGDATE
+	</select>
+</mapper>
