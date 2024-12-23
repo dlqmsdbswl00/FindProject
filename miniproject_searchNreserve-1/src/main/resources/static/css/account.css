@@ -1,35 +1,8 @@
-/* 전체 레이아웃 */
-body {
-	margin: 0;
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-}
-
-main {
-	display: flex;
-	flex: 1;
-	height: calc(100vh - 100px);
-	flex-direction: row;
-	/* 가로 배치 */
-}
-
 /* 기본적인 레이아웃에 공통되는 스타일 */
 .left-side,
 .right-side {
 	padding: 20px;
 	box-sizing: border-box;
-	overflow-y: auto;
-}
-
-.left-side {
-	background-color: #f9f9f9;
-	border-right: 1px solid #ddd;
-}
-
-.right-side {
-	background-color: #ffffff;
 }
 
 /* 반응형 디자인 */
@@ -55,12 +28,12 @@ main {
 
 /* 왼쪽 영역 (프로필 이미지, 사용자명) */
 .left-side {
-	width: 40%;
+	width: 80%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color:transparent;
-	border:none;
+	background-color: transparent;
+	border: none;
 	justify-content: center;
 }
 
@@ -106,14 +79,14 @@ button:hover {
 
 /* 오른쪽 영역 (버튼들) */
 .right-side {
-	width: 60%;
+	width: 80%;
 	height: 400px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 30px;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-
+	background-color: #ffffff;
 }
 
 
@@ -122,6 +95,7 @@ button:hover {
 	grid-template-columns: 1fr;
 	gap: 10px;
 	padding: 10px;
+	width: 100%;
 	height: 100%;
 	border-radius: 30px;
 	background-color: var(--find-main-color);
@@ -154,12 +128,12 @@ button:hover {
 }
 
 .subtitle i {
-	font-size: 24px;
+	font-size: 28px;
 	margin-right: 10px;
 }
 
 .subtitle h2 {
-	font-size: 20px;
+	font-size: 24px;
 	margin: 0;
 }
 
