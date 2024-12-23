@@ -7,114 +7,112 @@ import lombok.Data;
 //@Data
 public class CalDto {
 
-   private int seq;
-   private String email;
-   private String title;
-   private String content;
-   private String mdate;
-   private Date regdate;
-   private String ykiho;
-   private String yadmNm;
-   private int useMoney;
-   
-   public CalDto() {
-         super();
-         // TODO Auto-generated constructor stub
-      }
+	private int seq;
+	private String email;
+	private String title;
+	private String content;
+	private String mdate;
+	private Date regdate;
+	private String ykiho;
+	private String yadmNm;
+	private int useMoney;
 
-public CalDto(int seq, String email, String title, String content, String mdate, Date regdate, String ykiho,
-      String yadmNm, int useMoney) {
-   super();
-   this.seq = seq;
-   this.email = email;
-   this.title = title;
-   this.content = content;
-   this.mdate = mdate;
-   this.regdate = regdate;
-   this.ykiho = ykiho;
-   this.yadmNm = yadmNm;
-   this.useMoney = useMoney;
-}
+	public CalDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-@Override
-public String toString() {
-   return "CalDto [seq=" + seq + ", email=" + email + ", title=" + title + ", content=" + content + ", mdate=" + mdate
-         + ", regdate=" + regdate + ", ykiho=" + ykiho + ", yadmNm=" + yadmNm + ", useMoney=" + useMoney + "]";
-}
+	public CalDto(int seq, String email, String title, String content, String mdate, Date regdate, String ykiho,
+			String yadmNm, int useMoney) {
+		super();
+		this.seq = seq;
+		this.email = email;
+		this.title = title;
+		this.content = content;
+		this.mdate = mdate;
+		this.regdate = regdate;
+		this.ykiho = ykiho;
+		this.yadmNm = yadmNm;
+		this.useMoney = useMoney;
+	}
 
-public int getSeq() {
-   return seq;
-}
+	@Override
+	public String toString() {
+		return "CalDto [seq=" + seq + ", email=" + email + ", title=" + title + ", content=" + content + ", mdate="
+				+ mdate + ", regdate=" + regdate + ", ykiho=" + ykiho + ", yadmNm=" + yadmNm + ", useMoney=" + useMoney
+				+ "]";
+	}
 
-public void setSeq(int seq) {
-   this.seq = seq;
-}
+	public int getSeq() {
+		return seq;
+	}
 
-public String getEmail() {
-   return email;
-}
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
 
-public void setEmail(String email) {
-   this.email = email;
-}
+	public String getEmail() {
+		return email;
+	}
 
-public String getTitle() {
-   return title;
-}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-public void setTitle(String title) {
-   this.title = title;
-}
+	public String getTitle() {
+		return title;
+	}
 
-public String getContent() {
-   return content;
-}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-public void setContent(String content) {
-   this.content = content;
-}
+	public String getContent() {
+		return content;
+	}
 
-public String getMdate() {
-   return mdate;
-}
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-public void setMdate(String mdate) {
-   this.mdate = mdate;
-}
+	public String getMdate() {
+		return mdate;
+	}
 
-public Date getRegdate() {
-   return regdate;
-}
+	public void setMdate(String mdate) {
+		this.mdate = mdate;
+	}
 
-public void setRegdate(Date regdate) {
-   this.regdate = regdate;
-}
+	public Date getRegdate() {
+		return regdate;
+	}
 
-public String getYkiho() {
-   return ykiho;
-}
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
 
-public void setYkiho(String ykiho) {
-   this.ykiho = ykiho;
-}
+	public String getYkiho() {
+		return ykiho;
+	}
 
-public String getYadmNm() {
-   return yadmNm;
-}
+	public void setYkiho(String ykiho) {
+		this.ykiho = ykiho;
+	}
 
-public void setYadmNm(String yadmNm) {
-   this.yadmNm = yadmNm;
-}
+	public String getYadmNm() {
+		return yadmNm;
+	}
 
-public int getUseMoney() {
-   return useMoney;
-}
+	public void setYadmNm(String yadmNm) {
+		this.yadmNm = yadmNm;
+	}
 
-public void setUseMoney(int useMoney) {
-   this.useMoney = useMoney;
-}
+	public int getUseMoney() {
+		return useMoney;
+	}
 
+	public void setUseMoney(int useMoney) {
+		this.useMoney = useMoney;
+	}
 
-
-   
 }
