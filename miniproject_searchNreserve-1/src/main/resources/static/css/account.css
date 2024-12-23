@@ -12,27 +12,25 @@ main {
 	display: flex;
 	flex: 1;
 	height: calc(100vh - 100px);
-	/* 헤더와 푸터 제외 높이 */
-	flex-direction: row; /* 가로 배치 */
+	flex-direction: row;
+	/* 가로 배치 */
 }
 
-/* 왼쪽 영역 */
-.left-side {
-	flex: 1;
+/* 기본적인 레이아웃에 공통되는 스타일 */
+.left-side,
+.right-side {
 	padding: 20px;
 	box-sizing: border-box;
+	overflow-y: auto;
+}
+
+.left-side {
 	background-color: #f9f9f9;
 	border-right: 1px solid #ddd;
-	overflow-y: auto;
 }
 
-/* 오른쪽 영역 */
 .right-side {
-	flex: 1;
-	padding: 20px;
-	box-sizing: border-box;
 	background-color: #ffffff;
-	overflow-y: auto;
 }
 
 /* 반응형 디자인 */
@@ -47,46 +45,108 @@ main {
 	}
 }
 
-/* 유저 프로필 */
+/* 전체 콘텐츠 영역 */
+.main-content {
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 20px;
+}
+
+/* 왼쪽 영역 (프로필 이미지, 사용자명) */
+.left-side {
+	width: 40%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 .user-info {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	gap: 15px;
-	margin-bottom: 20px;
+	width: 100%;
 }
 
 .profile-pic {
-	width: 50px;
-	height: 50px;
+	width: 80%;
+	max-width: 400px;
+	height: 380px;
 	border-radius: 50%;
 	object-fit: cover;
+	margin-bottom: 100px;
 }
 
+.user-info h1 {
+	font-size: 50px;
+	text-align: center;
+	margin: 0;
+}
+
+/* 오른쪽 영역 (버튼들) */
+.right-side {
+	width: 60%;
+	height: 400px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 80px;
+}
+
+/* 버튼들 2행 2열로 배치 */
 .features {
-	margin-top: 20px;
-}
-
-#list .box {
-	border: 1px solid #ddd;
+	display: grid;
+	background-color: #e4ebf5;
+	grid-template-columns: 1fr;
+	gap: 10px;
 	padding: 10px;
+	height: 100%;
+	border-radius: 30px;
+}
+
+/* 각 버튼 스타일 */
+.feature {
+	display: flex;
+	background-color: #ffffff;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	border: 3px solid #e4ebf5;
+	border-radius: 30px;
+	padding: 20px;
+	transition: transform 0.3s ease-in-out;
+}
+
+/* 버튼 hover 시 효과 */
+.feature:hover {
+	transform: scale(1.05);
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* subtitle 스타일 */
+.subtitle {
+	display: flex;
+	align-items: center;
+	color: var(--find-main-color);
 	margin-bottom: 10px;
-	background: #fff;
-	border-radius: 8px;
 }
 
-.balance_amt,
-.transaction_list {
-	margin-top: 10px;
-	color: #333;
+.subtitle i {
+	font-size: 24px;
+	margin-right: 10px;
 }
 
-.transaction_list ul {
-	list-style: none;
-	padding: 0;
+.subtitle h2 {
+	font-size: 20px;
+	margin: 0;
 }
 
-.transaction_list li {
-	margin-bottom: 5px;
-	padding: 5px;
-	border-bottom: 1px dashed #ccc;
+/* 각 버튼의 내용 */
+.feature p {
+	font-size: 14px;
+	color: #555;
 }
