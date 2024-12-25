@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.Principal;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +81,29 @@ public class UserController {
 		session.invalidate(); // 세션 초기화
 		return "redirect:/"; // 로그아웃 후 로그인 화면으로 이동
 	}
+
+	// 회원 탈퇴 처리
+	@PostMapping("/deleteUser")
+	public String deleteUser(HttpServletRequest request) {
+	    // 세션에서 로그인한 사용자 정보 가져오기
+	    UserDto userDto = (UserDto) request.getSession().getAttribute("ldto");
+	    
+	    if (userDto != null) {
+	        String userName = userDto.getEmail();  // 또는 getName()을 사용하여 이름을 가져올 수 있습니다.
+	        boolean isDeleted = userService.deleteUser(userName); // 서비스에서 회원 탈퇴 처리
+
+	        if (isDeleted) {
+	            return "redirect:/logout"; // 로그아웃 후 리다이렉트
+	        } else {
+	            // 탈퇴 실패 처리 (예: 실패 메시지 추가)
+	            return "error"; // 탈퇴 실패 시 에러 페이지로 이동
+	        }
+	    } else {
+	        // 로그인하지 않은 경우 처리
+	        return "redirect:/login"; // 로그인 페이지로 리다이렉트
+	    }
+	}
+
 
 	// 메인 페이지
 	@GetMapping("/main")

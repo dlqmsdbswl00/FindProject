@@ -21,6 +21,9 @@ public interface UserMapper {
         // 정보 수정
       public boolean updateUser(UserDto dto);
       
+      // 회원 탈퇴 처리
+      public boolean deleteUser(String userName);  // 사용자 정보 삭제
+
       public List<CalDto> userReserve(String email);
       
       public int addAccount(Map<String, Object>map);

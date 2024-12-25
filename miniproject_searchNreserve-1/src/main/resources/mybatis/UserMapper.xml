@@ -28,6 +28,11 @@
       WHERE EMAIL = #{email}
    </update>
    
+    <!-- 사용자 삭제 -->
+    <delete id="deleteUser" parameterType="String">
+        DELETE FROM user WHERE email = #{userName}
+    </delete>
+    
    <select id="userReserve" parameterType="String" resultType="CalDto">
          SELECT YADMNM, MDATE, usemoney
          FROM RESERVEBOARD
