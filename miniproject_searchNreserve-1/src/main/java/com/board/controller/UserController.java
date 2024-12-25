@@ -85,25 +85,24 @@ public class UserController {
 	// 회원 탈퇴 처리
 	@PostMapping("/deleteUser")
 	public String deleteUser(HttpServletRequest request) {
-	    // 세션에서 로그인한 사용자 정보 가져오기
-	    UserDto userDto = (UserDto) request.getSession().getAttribute("ldto");
-	    
-	    if (userDto != null) {
-	        String userName = userDto.getEmail();  // 또는 getName()을 사용하여 이름을 가져올 수 있습니다.
-	        boolean isDeleted = userService.deleteUser(userName); // 서비스에서 회원 탈퇴 처리
+		// 세션에서 로그인한 사용자 정보 가져오기
+		UserDto userDto = (UserDto) request.getSession().getAttribute("ldto");
 
-	        if (isDeleted) {
-	            return "redirect:/logout"; // 로그아웃 후 리다이렉트
-	        } else {
-	            // 탈퇴 실패 처리 (예: 실패 메시지 추가)
-	            return "error"; // 탈퇴 실패 시 에러 페이지로 이동
-	        }
-	    } else {
-	        // 로그인하지 않은 경우 처리
-	        return "redirect:/login"; // 로그인 페이지로 리다이렉트
-	    }
+		if (userDto != null) {
+			String userName = userDto.getEmail(); // 또는 getName()을 사용하여 이름을 가져올 수 있습니다.
+			boolean isDeleted = userService.deleteUser(userName); // 서비스에서 회원 탈퇴 처리
+
+			if (isDeleted) {
+				return "redirect:/logout"; // 로그아웃 후 리다이렉트
+			} else {
+				// 탈퇴 실패 처리 (예: 실패 메시지 추가)
+				return "error"; // 탈퇴 실패 시 에러 페이지로 이동
+			}
+		} else {
+			// 로그인하지 않은 경우 처리
+			return "redirect:/login"; // 로그인 페이지로 리다이렉트
+		}
 	}
-
 
 	// 메인 페이지
 	@GetMapping("/main")
@@ -208,20 +207,60 @@ public class UserController {
 	// 유저 정보 수정 페이지 이동
 	@GetMapping("/userInfo")
 	public String userInfoPage(Model model, HttpServletRequest request) {
-		UserDto dto = userService.userInfo(request);
+		// 세션에서 UserDto 가져오기
+		UserDto dto = (UserDto) request.getSession().getAttribute("ldto");
+
+		if (dto == null) {
+			// 사용자가 로그인하지 않았다면 로그인 페이지로 리다이렉트
+			return "redirect:/login";
+		}
+
+		// 정보 수정 페이지에 UserDto 전달
 		model.addAttribute("dto", dto);
 		return "user/userInfo";
 	}
 
 	// 유저 정보 수정 처리
-	@PostMapping("/userUpdate")
-	public String updateUser(@Validated UserUpdateCommand userUpdateCommand, BindingResult result) {
-		if (result.hasErrors()) {
-			System.out.println("수정 내용이 잘못되었습니다.");
-			return "user/userInfo";
+	@PostMapping("/updateUser")
+	public String updateUser(UserUpdateCommand userUpdateCommand, HttpServletRequest request, Model model) {
+		// 세션에서 UserDto 가져오기
+		UserDto user = (UserDto) request.getSession().getAttribute("ldto");
+
+		if (user == null) {
+			// 사용자가 로그인하지 않았다면 로그인 페이지로 리다이렉트
+			return "redirect:/login";
 		}
-		userService.updateUser(userUpdateCommand);
-		return "redirect:/userInfo";
+
+		// UserDto에 사용자 수정 정보 반영
+		user.setName(userUpdateCommand.getName());
+		user.setAddress(userUpdateCommand.getAddress());
+		user.setPhone(userUpdateCommand.getPhone());
+		user.setEmail(userUpdateCommand.getEmail()); // 이메일도 수정 반영
+		user.setBirth(userUpdateCommand.getBirth()); // 생일 수정 반영
+
+		// 생일 값이 null이 아니면 설정, 아니면 null 처리
+		if (userUpdateCommand.getBirth() != null && !userUpdateCommand.getBirth().isEmpty()) {
+			user.setBirth(userUpdateCommand.getBirth());
+		} else {
+			user.setBirth(null); // 생일이 비어 있으면 null 처리
+		}
+
+		// 서비스 호출하여 데이터베이스 업데이트
+		boolean isUpdated = userService.updateUser(user);
+
+		if (isUpdated) {
+			// 수정 성공 시, 세션 정보도 갱신
+			request.getSession().setAttribute("ldto", user);
+
+			// 성공 메시지를 세션에 저장
+			request.getSession().setAttribute("updateMessage", "정보가 성공적으로 수정되었습니다.");
+
+			return "redirect:/userInfo"; // 수정된 정보로 다시 이동
+		} else {
+			// 수정 실패 시 에러 메시지 출력
+			model.addAttribute("error", "수정에 실패했습니다.");
+			return "error"; // 에러 페이지로 이동
+		}
 	}
 
 	// 기타 기능

@@ -40,20 +40,23 @@ public class UserService {
 	}
 
 	// 수정하기
-	public boolean updateUser(UserUpdateCommand userUpdateCommand) {
-		UserDto dto = new UserDto();
-		dto.setEmail(userUpdateCommand.getEmail());
-		dto.setName(userUpdateCommand.getName());
-		dto.setAddress(userUpdateCommand.getAddress());
-		dto.setBirth(userUpdateCommand.getBirth());
-		dto.setPhone(userUpdateCommand.getPhone());
-		return userMapper.updateUser(dto);
+	public boolean updateUser(UserDto dto) {
+		// 새로운 UserDto 객체 udto를 만들고, 기존 dto로부터 데이터를 넣음
+		UserDto udto = new UserDto();
+		udto.setEmail(dto.getEmail());
+		udto.setName(dto.getName());
+		udto.setAddress(dto.getAddress());
+		udto.setBirth(dto.getBirth());
+		udto.setPhone(dto.getPhone());
+
+		// userMapper를 통해 데이터베이스 업데이트
+		return userMapper.updateUser(udto); // 변경된 객체를 전달
 	}
 
 	// 회원 탈퇴 처리
-	public boolean deleteUser(String userName) {
+	public boolean deleteUser(String email) {
 		// 사용자 정보 삭제 전에 관련된 데이터를 먼저 삭제하는 과정 필요
-		boolean isDeleted = userMapper.deleteUser(userName);
+		boolean isDeleted = userMapper.deleteUser(email);
 		return isDeleted;
 	}
 
