@@ -34,13 +34,12 @@ public interface UserMapper {
       
       public List<Map<String, Object>> dayUseMoney(String email);
       
-      public List<Map<String, Object>> UpdateUseMoney(Map<String, String> map);
+      public List<Map<String, Object>>UpdateUseMoney(Map<String, String> map);
       
       public boolean insertExpense(ExpenseDto dto);
       
       public ExpenseMonDto monthlyExpense(Map<String, String> map);
       
       public List<ExpenseDto> monthlyExpenseList(Map<String, String> map);
-      
-      
 }
+     
