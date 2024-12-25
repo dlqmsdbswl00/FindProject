@@ -24,7 +24,7 @@
    
    <update id="updateUser" parameterType="UserDto">
       UPDATE USER
-      SET EMAIL = #{email},  NAME = #{name}, ADDRESS = #{address}, BIRTH = #{birth}, PHONE = #{phone}
+      SET  NAME = #{name}, ADDRESS = #{address}, BIRTH = #{birth}, PHONE = #{phone}
       WHERE EMAIL = #{email}
    </update>
    

@@ -41,13 +41,19 @@ public class UserService {
 
 	// 수정하기
 	public boolean updateUser(UserDto dto) {
+
+		// 로그: DTO 값 출력
+		System.out.println("Updating UserDto: " + dto);
+
 		// 새로운 UserDto 객체 udto를 만들고, 기존 dto로부터 데이터를 넣음
 		UserDto udto = new UserDto();
-		udto.setEmail(dto.getEmail());
 		udto.setName(dto.getName());
 		udto.setAddress(dto.getAddress());
 		udto.setBirth(dto.getBirth());
 		udto.setPhone(dto.getPhone());
+
+		// 로그: udto 값 출력
+		System.out.println("UserDto to be updated: " + udto);
 
 		// userMapper를 통해 데이터베이스 업데이트
 		return userMapper.updateUser(udto); // 변경된 객체를 전달

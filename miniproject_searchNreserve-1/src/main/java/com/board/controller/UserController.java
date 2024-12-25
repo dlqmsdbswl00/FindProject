@@ -212,7 +212,14 @@ public class UserController {
 
 		if (dto == null) {
 			// 사용자가 로그인하지 않았다면 로그인 페이지로 리다이렉트
-			return "redirect:/login";
+			return "login";
+		}
+
+		// 성공 메시지 가져오기 (세션에서)
+		String updateMessage = (String) request.getSession().getAttribute("updateMessage");
+		if (updateMessage != null) {
+			model.addAttribute("updateMessage", updateMessage);
+			request.getSession().removeAttribute("updateMessage"); // 메시지를 한번만 보여주기 위해 제거
 		}
 
 		// 정보 수정 페이지에 UserDto 전달
@@ -228,15 +235,17 @@ public class UserController {
 
 		if (user == null) {
 			// 사용자가 로그인하지 않았다면 로그인 페이지로 리다이렉트
-			return "redirect:/login";
+			return "login";
 		}
+		// 기존 이메일과 비밀번호는 수정하지 않음
+		String email = user.getEmail(); // 세션에서 가져온 이메일을 유지
+		String password = user.getPassword(); // 비밀번호는 수정하지 않음
 
 		// UserDto에 사용자 수정 정보 반영
 		user.setName(userUpdateCommand.getName());
 		user.setAddress(userUpdateCommand.getAddress());
 		user.setPhone(userUpdateCommand.getPhone());
-		user.setEmail(userUpdateCommand.getEmail()); // 이메일도 수정 반영
-		user.setBirth(userUpdateCommand.getBirth()); // 생일 수정 반영
+		user.setBirth(userUpdateCommand.getBirth());
 
 		// 생일 값이 null이 아니면 설정, 아니면 null 처리
 		if (userUpdateCommand.getBirth() != null && !userUpdateCommand.getBirth().isEmpty()) {
@@ -244,6 +253,12 @@ public class UserController {
 		} else {
 			user.setBirth(null); // 생일이 비어 있으면 null 처리
 		}
+		// 이메일, 비밀번호, 토큰 등의 필드 값도 유지
+		user.setEmail(user.getEmail()); // 세션에서 가져온 이메일을 유지
+		user.setPassword(user.getPassword()); // 비밀번호는 수정하지 않음
+
+		// 로그: 수정된 user 객체 확인
+		System.out.println("Updated UserDto: " + user);
 
 		// 서비스 호출하여 데이터베이스 업데이트
 		boolean isUpdated = userService.updateUser(user);
@@ -252,13 +267,19 @@ public class UserController {
 			// 수정 성공 시, 세션 정보도 갱신
 			request.getSession().setAttribute("ldto", user);
 
+			// 로그: 수정 성공 시 리디렉션 경로
+			System.out.println("Redirecting to /userInfo");
+
 			// 성공 메시지를 세션에 저장
 			request.getSession().setAttribute("updateMessage", "정보가 성공적으로 수정되었습니다.");
 
-			return "redirect:/userInfo"; // 수정된 정보로 다시 이동
+			return "user/userInfo"; // 수정된 정보로 다시 이동
 		} else {
 			// 수정 실패 시 에러 메시지 출력
 			model.addAttribute("error", "수정에 실패했습니다.");
+			// 로그: 수정 실패 시
+			System.out.println("Update failed");
+
 			return "error"; // 에러 페이지로 이동
 		}
 	}
