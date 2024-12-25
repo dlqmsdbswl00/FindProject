@@ -36,7 +36,6 @@
 		WHERE EMAIL = #{email}
 	</update>
 
-
 	<select id="userReserve" parameterType="String"
 		resultType="CalDto">
 		SELECT YADMNM, MDATE, usemoney
@@ -48,21 +47,26 @@
 
 	<!-- 이메일로 사용자 조회 -->
 	<select id="getUserByEmail" resultType="UserDto">
-		SELECT * FROM user WHERE
-		email = #{email}
+		SELECT * FROM users WHERE email = #{email}
 	</select>
 
 	<!-- 비밀번호 업데이트 -->
 	<update id="updatePassword">
-		UPDATE user
+		UPDATE users
 		SET password = #{newPassword}
-		WHERE email =
-		#{email}
+		WHERE email = #{email}
+	</update>
+
+<!-- 회원정보 업데이트 -->
+	<update id="updateUser">
+		UPDATE users
+		SET name = #{name}, password = #{password}
+		WHERE email = #{email}
 	</update>
 
 	<!-- 사용자 삭제 -->
 	<delete id="deleteUser">
-		DELETE FROM user WHERE email = #{email}
+		DELETE FROM users WHERE email = #{email}
 	</delete>
 
 </mapper>
