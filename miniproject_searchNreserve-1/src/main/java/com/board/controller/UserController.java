@@ -308,7 +308,6 @@ public class UserController {
 			Calendar cal = Calendar.getInstance();
 			year = cal.get(Calendar.YEAR) + "";
 			month = cal.get(Calendar.MONTH) + 1 + "";
-
 		}
 		HttpSession session = request.getSession();
 		UserDto uDto = (UserDto) session.getAttribute("ldto");
