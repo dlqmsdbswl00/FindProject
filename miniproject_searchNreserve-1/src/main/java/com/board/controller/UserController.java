@@ -312,6 +312,14 @@ public class UserController {
 		HttpSession session = request.getSession();
 		UserDto uDto = (UserDto) session.getAttribute("ldto");
 		ExpenseMonDto dto = userService.monExpense(year, month, uDto.getEmail());
+		// 만약 데이터가 없으면 기본값 설정
+		if (dto == null) {
+			dto = new ExpenseMonDto();
+			dto.setCoffeeTotal(0);
+			dto.setCigaretteTotal(0);
+			dto.setTaxiTotal(0);
+			dto.setAmountTotal(0);
+		}
 		model.addAttribute("dto", dto);
 		return "savemoney"; // savemoney.html 템플릿으로 이동
 	}
