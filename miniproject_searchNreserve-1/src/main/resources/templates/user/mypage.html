@@ -7,8 +7,6 @@
 	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/home.css}">
 	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-
-
 </head>
 
 <body>
@@ -32,7 +30,7 @@
 
 				<div class="right-side">
 					<div class="features">
-						<div class="feature">
+						<div class="feature" onclick="location.href='/userInfo'">
 							<div class="subtitle">
 								<i class="fi fi-br-user-pen"></i>
 								<h2>정보 수정</h2>
@@ -44,18 +42,43 @@
 								<h2>비밀번호 변경</h2>
 							</div>
 						</div>
-<!--						<div class="feature">-->
-<!--							<div class="subtitle">-->
-<!--								<i class="fi fi-br-bank"></i>-->
-<!--								<h2>계좌 변경</h2>-->
-<!--							</div>-->
-<!--						</div>-->
-						<div class="feature">
+						<!--						<div class="feature">-->
+						<!--							<div class="subtitle">-->
+						<!--								<i class="fi fi-br-bank"></i>-->
+						<!--								<h2>계좌 변경</h2>-->
+						<!--							</div>-->
+						<!--						</div>-->
+						
+						<!-- 회원 탈퇴 버튼 -->
+						<div class="feature" onclick="deleteUser()">
 							<div class="subtitle">
 								<i class="fi fi-br-remove-user"></i>
 								<h2>회원 탈퇴</h2>
 							</div>
 						</div>
+
+						<script>
+							function deleteUser() {
+								// 회원 탈퇴 확인 팝업창
+								if (confirm("정말로 회원을 탈퇴하시겠습니까?")) {
+									// `fetch`로 서버에 POST 요청
+									fetch('/deleteUser', {
+										method: 'POST',
+										headers: {
+											'Content-Type': 'application/json',
+										}
+									}).then(response => {
+										if (response.ok) {
+											alert("회원 탈퇴가 완료되었습니다.");
+											window.location.href = "/";  // 로그인 페이지로 리다이렉트
+										} else {
+											alert('회원 탈퇴에 실패했습니다.');
+										}
+									});
+								}
+							}
+
+						</script>
 					</div>
 				</div>
 			</div>

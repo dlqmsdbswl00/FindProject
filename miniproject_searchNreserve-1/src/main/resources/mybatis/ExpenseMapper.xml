@@ -13,19 +13,14 @@
 	<select id="monthlyExpense" resultType="ExpenseMonDto"
 		parameterType="Map">
 		SELECT
-		SUM(CASE WHEN expense_type = '커피' THEN amount ELSE
-		0 END) AS coffeeTotal,
-		SUM(CASE WHEN expense_type = '담배' THEN amount
-		ELSE 0 END) AS
+		SUM(CASE WHEN expense_type = '커피' THEN amount ELSE 0 END) AS coffeeTotal,
+		SUM(CASE WHEN expense_type = '담배' THEN amount ELSE 0 END) AS
 		cigaretteTotal,
-		SUM(CASE WHEN expense_type = '택시' THEN
-		amount ELSE 0 END) AS taxiTotal,
-		SUM(CASE WHEN expense_type IN ('커피',
-		'담배', '택시') THEN amount ELSE 0
+		SUM(CASE WHEN expense_type = '택시' THEN amount ELSE 0 END) AS taxiTotal,
+		SUM(CASE WHEN expense_type IN ('커피', '담배', '택시') THEN amount ELSE 0
 		END) AS amountTotal
 		FROM expense
-		WHERE
-		YEAR(date) = #{year}
+		WHERE YEAR(date) = #{year}
 		AND MONTH(date) = #{month}
 		AND email = #{email}
 	</select>
@@ -39,7 +34,6 @@
 		FROM expense
 		WHERE email = #{email}
 		AND YEAR(date) = #{year}
-		AND MONTH(date) =
-		#{month}
+		AND MONTH(date) = #{month}
 	</select>
 </mapper>
