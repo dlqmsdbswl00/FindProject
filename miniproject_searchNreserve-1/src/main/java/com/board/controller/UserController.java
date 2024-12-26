@@ -33,6 +33,7 @@ import com.board.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -260,6 +261,50 @@ public class UserController {
 			// 수정 실패 시 에러 메시지 출력
 			model.addAttribute("error", "수정에 실패했습니다.");
 			return "error"; // 에러 페이지로 이동
+		}
+	}
+
+	@GetMapping("/changepassword")
+	public String changePasswordPage() {
+		return "user/changePassword"; // 비밀번호 변경 화면으로 이동
+	}
+
+	@PostMapping("/changepassword")
+	public String changePassword(@RequestParam String currentPassword, @RequestParam String newPassword,
+			@RequestParam String confirmPassword, HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession();
+		UserDto uDto = (UserDto) session.getAttribute("ldto");
+
+		// 유효성 검사
+		if (uDto == null) {
+			model.addAttribute("error", "로그인 정보가 없습니다.");
+			return "redirect:/login"; // 로그인 화면으로 리다이렉트
+		}
+
+		// 비밀번호 확인
+		if (!newPassword.equals(confirmPassword)) {
+			model.addAttribute("error", "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+			return "user/changePassword"; // 비밀번호 변경 화면으로 돌아가기
+		}
+
+		// 현재 비밀번호가 맞는지 확인
+		boolean isCurrentPasswordValid = userService.checkCurrentPassword(uDto.getEmail(), currentPassword);
+
+		if (!isCurrentPasswordValid) {
+			model.addAttribute("error", "현재 비밀번호가 잘못되었습니다.");
+			return "user/changePassword"; // 비밀번호 변경 화면으로 돌아가기
+		}
+
+		// 새 비밀번호로 변경
+		boolean isPasswordChanged = userService.changePassword(uDto.getEmail(), newPassword);
+
+		if (isPasswordChanged) {
+			model.addAttribute("success", "비밀번호가 성공적으로 변경되었습니다.");
+			return "redirect:/mypage"; // 마이페이지로 리다이렉트 (사용자 경험을 개선)
+		} else {
+			model.addAttribute("error", "비밀번호 변경에 실패했습니다.");
+			return "user/changePassword"; // 비밀번호 변경 화면으로 돌아가기
 		}
 	}
 

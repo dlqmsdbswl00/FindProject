@@ -11,45 +11,70 @@
 
 	<select id="loginUser" parameterType="UserDto"
 		resultType="UserDto">
-		SELECT EMAIL, NAME, PASSWORD, USERACCESSTOKEN, USERREFRESHTOKEN,
+		SELECT EMAIL, NAME, PASSWORD, USERACCESSTOKEN,
+		USERREFRESHTOKEN,
 		USERSEQNO, ADDRESS, BIRTH, PHONE
 		FROM user
-		WHERE EMAIL=#{email} AND PASSWORD=#{password}
+		WHERE
+		EMAIL=#{email} AND PASSWORD=#{password}
 	</select>
 
 	<select id="userInfo" parameterType="String"
 		resultType="UserDto">
 		SELECT EMAIL, NAME, ADDRESS, BIRTH, PHONE
 		FROM USER
-		WHERE EMAIL = #{email}
+		WHERE
+		EMAIL = #{email}
 	</select>
 
 	<update id="updateUser" parameterType="UserDto">
 		UPDATE USER
-		SET EMAIL = #{email}, NAME = #{name}, ADDRESS = #{address}, BIRTH =
-		#{birth}, PHONE = #{phone}
+		SET EMAIL =
+		#{email}, NAME = #{name}, ADDRESS = #{address}, BIRTH =
+		#{birth}, PHONE
+		= #{phone}
 		WHERE EMAIL = #{email}
 	</update>
 
+
+	<!-- 이메일로 사용자 조회 -->
+	<select id="findByEmail" parameterType="String"
+		resultType="com.board.dtos.UserDto">
+		SELECT * FROM user WHERE email = #{email}
+	</select>
+
+	<!-- 비밀번호 변경 -->
+	<update id="updatePassword"
+		parameterType="com.board.dtos.UserDto">
+		UPDATE user
+		SET password = #{password}
+		WHERE email = #{email}
+	</update>
+
+
 	<!-- 사용자 삭제 -->
 	<delete id="deleteUser" parameterType="String">
-		DELETE FROM user WHERE email = #{userName}
+		DELETE FROM user WHERE
+		email = #{userName}
 	</delete>
 
 	<select id="userReserve" parameterType="String"
 		resultType="CalDto">
 		SELECT YADMNM, MDATE, usemoney
 		FROM RESERVEBOARD
-		WHERE EMAIL = #{email}
+		WHERE EMAIL
+		= #{email}
 	</select>
 
 	<insert id="addAccount" parameterType="Map">
 		INSERT INTO USERACCOUNT
-		VALUES(#{fintech_use_num}, #{money},#{bank_name},#{userseqno}, #{account_num_masked})
+		VALUES(#{fintech_use_num}, #{money},#{bank_name},#{userseqno},
+		#{account_num_masked})
 	</insert>
 
 	<select id="totalMoney" parameterType="int" resultType="int">
-		SELECT sum(money)
+		SELECT
+		sum(money)
 		FROM useraccount
 		WHERE USERSEQNO = #{userseqno}
 	</select>
@@ -58,21 +83,24 @@
 
 	<select id="getMyAccount" parameterType="Integer"
 		resultType="AccountDto">
-		SELECT FINTECH_USE_NUM, MONEY, BANK_NAME, USERSEQNO, ACCOUNT_NUM_MASKED
+		SELECT FINTECH_USE_NUM, MONEY, BANK_NAME, USERSEQNO,
+		ACCOUNT_NUM_MASKED
 		FROM USERACCOUNT
 		WHERE USERSEQNO = #{userseqno}
 	</select>
 
 	<select id="CheckAccount" parameterType="String"
 		resultType="String">
-		SELECT FINTECH_USE_NUM FROM USERACCOUNT WHERE FINTECH_USE_NUM =
+		SELECT FINTECH_USE_NUM FROM USERACCOUNT WHERE
+		FINTECH_USE_NUM =
 		#{fintech_use_num}
 	</select>
 
 	<select id="dayUseMoney" parameterType="String" resultType="Map">
 		SELECT REGDATE, SUM(USEMONEY) AS TOTALUSEMONEY
 		FROM RESERVEBOARD
-		WHERE EMAIL = #{email}
+		WHERE
+		EMAIL = #{email}
 		GROUP BY REGDATE
 		ORDER BY REGDATE
 	</select>
@@ -80,8 +108,10 @@
 	<select id="UpdateUseMoney" parameterType="Map" resultType="Map">
 		SELECT REGDATE, SUM(USEMONEY) AS TOTALUSEMONEY
 		FROM RESERVEBOARD
-		WHERE EMAIL = #{email} AND REGDATE BETWEEN #{startDate} AND #{endDate}
-		GROUP BY REGDATE
+		WHERE
+		EMAIL = #{email} AND REGDATE BETWEEN #{startDate} AND #{endDate}
+		GROUP
+		BY REGDATE
 		ORDER BY REGDATE
 	</select>
 
@@ -95,14 +125,19 @@
 	<select id="monthlyExpense" resultType="ExpenseMonDto"
 		parameterType="Map">
 		SELECT
-		SUM(CASE WHEN expense_type = '커피' THEN amount ELSE 0 END) AS coffeeTotal,
-		SUM(CASE WHEN expense_type = '담배' THEN amount ELSE 0 END) AS
+		SUM(CASE WHEN expense_type = '커피' THEN amount ELSE
+		0 END) AS coffeeTotal,
+		SUM(CASE WHEN expense_type = '담배' THEN amount
+		ELSE 0 END) AS
 		cigaretteTotal,
-		SUM(CASE WHEN expense_type = '택시' THEN amount ELSE 0 END) AS taxiTotal,
-		SUM(CASE WHEN expense_type IN ('커피', '담배', '택시') THEN amount ELSE 0
+		SUM(CASE WHEN expense_type = '택시' THEN
+		amount ELSE 0 END) AS taxiTotal,
+		SUM(CASE WHEN expense_type IN ('커피',
+		'담배', '택시') THEN amount ELSE 0
 		END) AS amountTotal
 		FROM expense
-		WHERE YEAR(date) = #{year}
+		WHERE
+		YEAR(date) = #{year}
 		AND MONTH(date) = #{month}
 		AND email = #{email}
 	</select>

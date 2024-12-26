@@ -13,36 +13,41 @@ import com.board.dtos.UserDto;
 
 @Mapper
 public interface UserMapper {
-   public int addUser(UserDto dto);
-   public UserDto loginUser(UserDto dto);
-   public UserDto userInfo(String email);
-   
-   
-        // 정보 수정
-      public boolean updateUser(UserDto dto);
-      
-      // 회원 탈퇴 처리
-      public boolean deleteUser(String userName);  // 사용자 정보 삭제
+	public int addUser(UserDto dto);
 
-      public List<CalDto> userReserve(String email);
-      
-      public int addAccount(Map<String, Object>map);
-      
-      public List<AccountDto> getMyAccount(int userseqno);
-      
-      
-      public int totalMoney(int userseqno);
+	public UserDto loginUser(UserDto dto);
 
-      public String CheckAccount(String fintech_use_num);
-      
-      public List<Map<String, Object>> dayUseMoney(String email);
-      
-      public List<Map<String, Object>>UpdateUseMoney(Map<String, String> map);
-      
-      public boolean insertExpense(ExpenseDto dto);
-      
-      public ExpenseMonDto monthlyExpense(Map<String, String> map);
-      
-      public List<ExpenseDto> monthlyExpenseList(Map<String, String> map);
+	public UserDto userInfo(String email);
+
+	// 정보 수정
+	public boolean updateUser(UserDto dto);
+
+	// 이메일로 사용자 조회
+	UserDto findByEmail(String email);
+
+	// 비밀번호 변경
+	void updatePassword(UserDto userDto);
+
+	// 회원 탈퇴 처리
+	public boolean deleteUser(String userName); // 사용자 정보 삭제
+
+	public List<CalDto> userReserve(String email);
+
+	public int addAccount(Map<String, Object> map);
+
+	public List<AccountDto> getMyAccount(int userseqno);
+
+	public int totalMoney(int userseqno);
+
+	public String CheckAccount(String fintech_use_num);
+
+	public List<Map<String, Object>> dayUseMoney(String email);
+
+	public List<Map<String, Object>> UpdateUseMoney(Map<String, String> map);
+
+	public boolean insertExpense(ExpenseDto dto);
+
+	public ExpenseMonDto monthlyExpense(Map<String, String> map);
+
+	public List<ExpenseDto> monthlyExpenseList(Map<String, String> map);
 }
-     
