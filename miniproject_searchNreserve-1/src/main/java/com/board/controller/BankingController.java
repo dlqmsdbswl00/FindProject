@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.board.dtos.AccountDto;
 import com.board.dtos.UserDto;
-import com.board.service.AccountService;
 import com.board.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +34,6 @@ public class BankingController {
 
 	@Autowired
 	UserService userService;
-	AccountService accountService;
 
 	@GetMapping("/main")
 	public String main() {
@@ -85,6 +83,7 @@ public class BankingController {
 
 		return result;
 	}
+
 
 	@ResponseBody
 	@GetMapping("/balance")
@@ -157,7 +156,7 @@ public class BankingController {
 		result = (JSONObject) new JSONParser().parse(response.toString());
 		String money = result.get("balance_amt").toString();
 		String bank_name = result.get("bank_name").toString();
-		accountService.addAccount(money, fintech_use_num, bank_name, userseqno, account_num_masked);
+		userService.addAccount(money, fintech_use_num, bank_name, userseqno, account_num_masked);
 
 		return result;
 	}
@@ -222,7 +221,7 @@ public class BankingController {
 		int userseqno = ldto.getUserseqno();
 		System.out.println(userseqno);
 
-		List<AccountDto> list = accountService.getMyAccount(userseqno);
+		List<AccountDto> list = userService.getMyAccount(userseqno);
 		System.out.println(list);
 		model.addAttribute("list", list);
 
@@ -235,12 +234,9 @@ public class BankingController {
 		HttpSession session = request.getSession();
 		UserDto ldto = (UserDto) session.getAttribute("ldto");
 		int userseqno = ldto.getUserseqno();
-//		기존
-//		Integer totalMoney = accountService.totalMoney(request);
-//		System.out.println(accountService.totalMoney(request));
-		
-		Integer totalMoney = accountService.totalMoney(userseqno);  // 변경된 호출 방식
-	    System.out.println(totalMoney);
+
+		Integer totalMoney = userService.totalMoney(request);
+		System.out.println(userService.totalMoney(request));
 		return totalMoney;
 	}
 
@@ -249,7 +245,7 @@ public class BankingController {
 	public Map<String, String> idChk(String fintech_use_num) {
 		System.out.println("계좌중복체크");
 
-		String resultAccount = accountService.checkAccount(fintech_use_num);
+		String resultAccount = userService.CheckAccount(fintech_use_num);
 
 		// json 객체로 보내기 위해 Map에 담아서 응답
 		// text라면 그냥 String 으로 보내도 됨
@@ -266,7 +262,7 @@ public class BankingController {
 		UserDto ldto = (UserDto) session.getAttribute("ldto");
 		String email = ldto.getEmail();
 
-		List<Map<String, Object>> result = accountService.dayUseMoney(email);
+		List<Map<String, Object>> result = userService.dayUseMoney(email);
 		System.out.println(result);
 		return result;
 	}
@@ -283,7 +279,7 @@ public class BankingController {
 		map.put("email", email);
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
-		List<Map<String, Object>> result = accountService.UpdateUseMoney(map);
+		List<Map<String, Object>> result = userService.UpdateUseMoney(map);
 		System.out.println(result);
 		return result;
 	}
