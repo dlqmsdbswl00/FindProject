@@ -13,15 +13,36 @@ import com.board.dtos.UserDto;
 
 @Mapper
 public interface UserMapper {
-	public int addUser(UserDto dto);
+   public int addUser(UserDto dto);
+   public UserDto loginUser(UserDto dto);
+   public UserDto userInfo(String email);
+   
+   
+        // 정보 수정
+      public boolean updateUser(UserDto dto);
+      
+      // 회원 탈퇴 처리
+      public boolean deleteUser(String userName);  // 사용자 정보 삭제
 
-	public UserDto loginUser(UserDto dto);
+      public List<CalDto> userReserve(String email);
+      
+      public int addAccount(Map<String, Object>map);
+      
+      public List<AccountDto> getMyAccount(int userseqno);
+      
+      
+      public int totalMoney(int userseqno);
 
-	public UserDto userInfo(String email);
-
-	// 정보 수정
-	public boolean updateUser(UserDto dto);
-
-	public List<CalDto> userReserve(String email);
-
+      public String CheckAccount(String fintech_use_num);
+      
+      public List<Map<String, Object>> dayUseMoney(String email);
+      
+      public List<Map<String, Object>>UpdateUseMoney(Map<String, String> map);
+      
+      public boolean insertExpense(ExpenseDto dto);
+      
+      public ExpenseMonDto monthlyExpense(Map<String, String> map);
+      
+      public List<ExpenseDto> monthlyExpenseList(Map<String, String> map);
 }
+     
