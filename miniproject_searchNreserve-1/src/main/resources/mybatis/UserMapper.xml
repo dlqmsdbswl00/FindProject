@@ -48,15 +48,21 @@
 		parameterType="com.board.dtos.UserDto">
 		UPDATE user
 		SET password = #{password}
-		WHERE email = #{email}
+		WHERE email =
+		#{email}
 	</update>
 
 
+	<!-- 관련 데이터 삭제 -->
+	<delete id="deleteExpenseByEmail" parameterType="String">
+		DELETE FROM expense WHERE email = #{email}
+	</delete>
+
 	<!-- 사용자 삭제 -->
 	<delete id="deleteUser" parameterType="String">
-		DELETE FROM user WHERE
-		email = #{userName}
+		DELETE FROM user WHERE email = #{email}
 	</delete>
+
 
 	<select id="userReserve" parameterType="String"
 		resultType="CalDto">

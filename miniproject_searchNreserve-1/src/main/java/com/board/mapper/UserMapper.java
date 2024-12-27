@@ -28,8 +28,11 @@ public interface UserMapper {
 	// 비밀번호 변경
 	void updatePassword(UserDto userDto);
 
-	// 회원 탈퇴 처리
-	public boolean deleteUser(String userName); // 사용자 정보 삭제
+	  // 관련 데이터 삭제
+    int deleteExpenseByEmail(String email);
+
+    // 사용자 삭제
+    int deleteUser(String email);
 
 	public List<CalDto> userReserve(String email);
 
