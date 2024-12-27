@@ -7,6 +7,7 @@ import java.util.Map;
 import org.bouncycastle.jcajce.spec.UserKeyingMaterialSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.board.command.UserUpdateCommand;
 import com.board.dtos.AccountDto;
@@ -55,27 +56,33 @@ public class UserService {
 	}
 
 	// 현재 비밀번호가 맞는지 확인하는 메서드
-    public boolean checkCurrentPassword(String email, String currentPassword) {
-        UserDto udto = userMapper.findByEmail(email);
-        return udto != null && udto.getPassword().equals(currentPassword);
-    }
+	public boolean checkCurrentPassword(String email, String currentPassword) {
+		UserDto udto = userMapper.findByEmail(email);
+		return udto != null && udto.getPassword().equals(currentPassword);
+	}
 
-    // 비밀번호 변경 메서드
-    public boolean changePassword(String email, String newPassword) {
-        UserDto udto = userMapper.findByEmail(email);
-        if (udto != null) {
-            udto.setPassword(newPassword);  // 새 비밀번호로 업데이트
-            userMapper.updatePassword(udto);  // 비밀번호 저장
-            return true;
-        }
-        return false;
-    }
-    
+	// 비밀번호 변경 메서드
+	public boolean changePassword(String email, String newPassword) {
+		UserDto udto = userMapper.findByEmail(email);
+		if (udto != null) {
+			udto.setPassword(newPassword); // 새 비밀번호로 업데이트
+			userMapper.updatePassword(udto); // 비밀번호 저장
+			return true;
+		}
+		return false;
+	}
+
 	// 회원 탈퇴 처리
+	@Transactional
 	public boolean deleteUser(String email) {
-		// 사용자 정보 삭제 전에 관련된 데이터를 먼저 삭제하는 과정 필요
-		boolean isDeleted = userMapper.deleteUser(email);
-		return isDeleted;
+		 // 관련 데이터 삭제
+        int deletedExpenses = userMapper.deleteExpenseByEmail(email);
+
+        // 사용자 정보 삭제
+        int deletedUser = userMapper.deleteUser(email);
+
+        // 삭제 여부 반환 (사용자 삭제가 성공해야만 true 반환)
+        return deletedUser > 0;
 	}
 
 	public List<CalDto> userReserve(String email) {
